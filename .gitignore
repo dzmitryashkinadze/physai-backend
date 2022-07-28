@@ -1,0 +1,40 @@
+# secrets
+*.env
+*.env_*
+docker-compose.yml
+
+# DB backup
+*/db_backup
+
+# dependencies
+*/node_modules
+*/.pnp
+*.pnp.js
+*/venv
+*physai.egg-info
+*.pyc
+
+# testing
+*/coverage
+*.log
+*.pytest*
+.coverage
+
+# production
+*/build
+build.*
+deploy_*.sh
+
+# misc
+*.vscode
+*.DS_Store
+*.env.local
+*.env.development.local
+*.env.test.local
+*.env.production.local
+*__pycache__
+*npm-debug.log*
+*yarn-debug.log*
+*yarn-error.log*
+*lock.json
+node_modules
