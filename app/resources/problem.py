@@ -1,4 +1,5 @@
 from flask_restful import Resource, reqparse
+from flask import Response, json
 from app.models.problem import ProblemModel
 from app.decorators import auth_required
 
@@ -97,14 +98,12 @@ class ProblemList(Resource):
 # class controlling problems resource
 class ProblemListAdmin(Resource):
     @auth_required(3)
-    def get(user, self, bundle_id):
-        def takeProblemNumber(el):
-            return el['problem_number']
+    def get(user, self):
+        #def takeProblemNumber(el):
+        #    return el['problem_number']
         problems = list(map(lambda x: x.summary(),
-                            ProblemModel.query.
-                            filter_by(bundle_id=bundle_id).all()))
-        problems.sort(key=takeProblemNumber)
-        return {
-            'problems': problems,
-            'n_problems': len(problems)
-        }
+                            ProblemModel.query.all()))
+        #problems.sort(key=takeProblemNumber)
+        response = Response(json.dumps(problems))
+        response.headers['Content-Range'] = len(problems)
+        return response

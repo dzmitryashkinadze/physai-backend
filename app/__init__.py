@@ -28,7 +28,7 @@ def create_app(config_class):
     api = Api(app)
 
     # init CORS
-    CORS(app)
+    CORS(app, resources=r'/api/admin/*', headers='Content-Type', expose_headers=['X-Total-Count', 'Content-Range'])
 
     # create all of the routes
     initialize_routes(api)

@@ -1,6 +1,7 @@
 from flask_restful import Resource, reqparse
 from app.models.user import UserModel
 from flask import jsonify, request
+from flask import Response, json
 import jwt
 import re
 import datetime
@@ -21,6 +22,22 @@ class User(Resource):
             return {"message": 'Permission denied'}, 401
         else:
             return {'data': user.json()}
+
+
+class UserAdmin(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('access',
+                        type=str
+                        )
+
+    @auth_required(3)
+    def get(user, self, id):
+        user = UserModel.find_by_id(id)
+        if user:
+            return user.json()
+        else:
+            return {"message": 'User not found'}, 201
+            
 
     @auth_required(3)
     def patch(user, self, id):
@@ -195,13 +212,13 @@ class AdminLogin(Resource):
                     "status": 1}
         access_payload = {
             'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0,
-                                                                   minutes=30),
+                                                                   minutes=60),
             'iat': datetime.datetime.utcnow(),
             'access': user.access,
             'email': data['email']
         }
         refresh_payload = {
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1,
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=30,
                                                                    minutes=0),
             'iat': datetime.datetime.utcnow(),
             'access': user.access,
@@ -272,11 +289,10 @@ class UserRefresh(Resource):
 
 
 # class controlling skills resource
-class UserList(Resource):
+class UserListAdmin(Resource):
     @auth_required(3)
     def get(user, self):
         users = list(map(lambda x: x.json(), UserModel.query.all()))
-        return {
-            'users': users,
-            'n_users': len(users)
-        }
+        response = Response(json.dumps(users))
+        response.headers['Content-Range'] = len(users)
+        return response

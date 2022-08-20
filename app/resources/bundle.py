@@ -1,10 +1,29 @@
 from flask_restful import Resource, reqparse
+from flask import Response, json
 from app.models.bundle import BundleModel
 from app.decorators import auth_required
 
 
 # class controlling bundle resource
 class Bundle(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('title')
+    parser.add_argument('level')
+    parser.add_argument('description')
+    parser.add_argument('outline')
+
+    #def get(user, self, id):
+    #def get(self, id):
+    @auth_required(1)
+    def get(user, self, id):
+        bundle = BundleModel.find_by_id(int(id))
+        if bundle:
+            return bundle.json()
+        return {'message': 'Bundle not found'}, 404
+
+
+# class controlling bundle resource
+class BundleAdmin(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('title')
     parser.add_argument('level')
@@ -26,7 +45,9 @@ class Bundle(Resource):
             return {'message': 'Error with bundle creation'}, 404
         return bundle.json(), 201
 
-    @auth_required(1)
+    #def get(user, self, id):
+    #def get(self, id):
+    @auth_required(3)
     def get(user, self, id):
         bundle = BundleModel.find_by_id(int(id))
         if bundle:
@@ -56,13 +77,19 @@ class Bundle(Resource):
 # class controlling bundle resource
 class BundleList(Resource):
     def get(self):
-        return {'items': list(map(lambda x: x.summary(),
-                                  BundleModel.query.all()))}
+        data = list(map(lambda x: x.summary(),
+                                  BundleModel.query.all()))
+        response = Response(json.dumps(data))
+        response.headers['Content-Range'] = len(data)
+        return response
 
 
 # class controlling bundle resource
 class BundleListAdmin(Resource):
     @auth_required(3)
     def get(user, self):
-        return {'items': list(map(lambda x: x.summary(),
-                                  BundleModel.query.all()))}
+        data = list(map(lambda x: x.summary(),
+                                  BundleModel.query.all()))
+        response = Response(json.dumps(data))
+        response.headers['Content-Range'] = len(data)
+        return response

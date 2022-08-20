@@ -8,6 +8,8 @@ def auth_required(access=1):
         @wraps(f)
         def wrapper(*args, **kwargs):
             auth_header = request.headers.get('Authorization')
+            if not auth_header:
+                auth_header = request.headers.get('authorization')
             if auth_header:
                 token = auth_header.split(" ")[1] # Parses out the "Bearer" portion
             else:
@@ -22,7 +24,7 @@ def auth_required(access=1):
                     return {'message': 'token invalid',
                             'auth': 0}, 401
                 if not isinstance(decoded, str):
-                    user = UserModel.find_by_username(decoded['name'])
+                    user = UserModel.find_by_email(decoded['email'])
                     if not user:
                         return {'message': 'token invalid',
                                 'auth': 0}, 401
