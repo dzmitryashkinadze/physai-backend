@@ -22,6 +22,37 @@ class Problem(Resource):
     parser.add_argument('access')
     parser.add_argument('difficulty')
 
+    @auth_required(1)
+    def get(user, self, id):
+        problem = ProblemModel.find_by_id(int(id))
+        if problem:
+            if int(problem.access) > int(user.access):
+                return {'message': 'permission denied'}, 401
+            else:
+                return problem.json()
+        return {'message': 'Problem not found'}, 404
+
+    @auth_required(1)
+    def patch(user, self, id):
+        data = Problem.parser.parse_args()
+        problem = ProblemModel.find_by_id(int(id))
+        if problem and 'graph' in data and data['graph']:
+            result = problem.check_graph(data['graph'])
+        else:
+            {'message': 'Something is wrong'}, 404
+        return {'result': result}
+
+
+# class controlling problem resource
+class AdminProblem(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('bundle_id', type=int)
+    parser.add_argument('text')
+    parser.add_argument('graph')
+    parser.add_argument('problem_number')
+    parser.add_argument('access')
+    parser.add_argument('difficulty')
+
     @auth_required(3)
     def post(user, self, id):
         data = Problem.parser.parse_args()
@@ -96,7 +127,7 @@ class ProblemList(Resource):
 
 
 # class controlling problems resource
-class ProblemListAdmin(Resource):
+class AdminProblemList(Resource):
     @auth_required(3)
     def get(user, self):
         #def takeProblemNumber(el):

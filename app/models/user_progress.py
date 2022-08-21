@@ -24,6 +24,7 @@ class UserProgressModel(db.Model):
     # output
     def json(self):
         return {
+            'id': self.id,
             'user_id': self.user_id,
             'bundle_id': self.bundle_id,
             'progress': self.progress
@@ -36,6 +37,11 @@ class UserProgressModel(db.Model):
             filter_by(user_id=user_id).\
             filter_by(bundle_id=bundle_id).\
             first()
+
+    # finder
+    @classmethod
+    def find_by_id(cls, _id):
+        return cls.query.filter_by(id=_id).first()
 
     def save_to_db(self):
         db.session.add(self)

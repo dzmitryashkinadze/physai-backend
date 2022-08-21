@@ -24,7 +24,7 @@ class User(Resource):
             return {'data': user.json()}
 
 
-class UserAdmin(Resource):
+class AdminUser(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('access',
                         type=str
@@ -73,24 +73,61 @@ class UserValidate(Resource):
                 decoded = jwt.decode(token, current_app.config['JWT_SECRET_KEY'], algorithms=['HS256'])
             except jwt.ExpiredSignatureError:
                 return {'message': 'token expired',
-                        'auth': 0}
+                        'auth': 0}, 401
             except jwt.InvalidTokenError:
                 return {'message': 'token invalid',
-                        'auth': 0}
+                        'auth': 0}, 401
             if not isinstance(decoded, str):
                 user = UserModel.find_by_email(decoded['email'])
                 if not user:
                     return {'message': 'token invalid',
-                            'auth': 0}
+                            'auth': 0}, 401
                 else:
                     return {'message': 'You are successfully logged in!',
                             'auth': user.access,
                             'user_id': user.id}
             else:
                 return {'message': 'token invalid',
-                        'auth': 0}
+                        'auth': 0}, 401
         return {'message': 'token missing',
-                'auth': 0}
+                'auth': 0}, 401
+
+
+class AdminValidate(Resource):
+    def get(self):
+
+        auth_header = request.headers.get('Authorization')
+        if auth_header:
+            token = auth_header.split(" ")[1] # Parses out the "Bearer" portion
+        else:
+            token = ''
+        if token:
+            try:
+                decoded = jwt.decode(token, current_app.config['JWT_SECRET_KEY'], algorithms=['HS256'])
+            except jwt.ExpiredSignatureError:
+                return {'message': 'token expired',
+                        'auth': 0}, 401
+            except jwt.InvalidTokenError:
+                return {'message': 'token invalid',
+                        'auth': 0}, 401
+            if not isinstance(decoded, str):
+                user = UserModel.find_by_email(decoded['email'])
+                if not user:
+                    return {'message': 'token invalid',
+                            'auth': 0}, 401
+                else:
+                    if user.access != 3:
+                        return {'message': 'token invalid',
+                                'auth': 0}, 401
+                    else:
+                        return {'message': 'You are successfully logged in!',
+                                'auth': user.access,
+                                'user_id': user.id}
+            else:
+                return {'message': 'token invalid',
+                        'auth': 0}, 401
+        return {'message': 'token missing',
+                'auth': 0}, 401
 
 
 class UserRegister(Resource):
@@ -211,8 +248,8 @@ class AdminLogin(Resource):
             return {"message": "Bad email or password",
                     "status": 1}
         access_payload = {
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0,
-                                                                   minutes=60),
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1,
+                                                                   minutes=0),
             'iat': datetime.datetime.utcnow(),
             'access': user.access,
             'email': data['email']
@@ -236,7 +273,7 @@ class AdminLogin(Resource):
                 "refresh_token": refresh_token}
 
 
-class UserRefresh(Resource):
+class UserRefreshToken(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('refreshToken',
                         type=str,
@@ -244,7 +281,7 @@ class UserRefresh(Resource):
                         help="This field cannot be blank.")
 
     def post(self):
-        data = UserRefresh.parser.parse_args()
+        data = UserRefreshToken.parser.parse_args()
         if data['refreshToken']:
             token = data['refreshToken']
         else:
@@ -288,8 +325,60 @@ class UserRefresh(Resource):
             'auth': 0})
 
 
+class AdminRefreshToken(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('refreshToken',
+                        type=str,
+                        required=True,
+                        help="This field cannot be blank.")
+
+    def post(self):
+        data = AdminRefreshToken.parser.parse_args()
+        if data['refreshToken']:
+            token = data['refreshToken']
+        else:
+            token = ''
+        if token:
+            try:
+                decoded = jwt.decode(token,
+                                     current_app.config['JWT_SECRET_KEY'],
+                                     algorithms=['HS256'])
+            except jwt.ExpiredSignatureError:
+                return jsonify({'message': 'Signature expired. Login please',
+                                'auth': 0})
+            except jwt.InvalidTokenError:
+                return jsonify({'message': 'Nice try, invalid token. Login please',
+                                'auth': 0})
+            if not isinstance(decoded, str):
+                user = UserModel.find_by_email(decoded['email'])
+                if not user:
+                    return jsonify({'message': 'Invalid token',
+                                    'auth': 0})
+                else:
+                    access_payload = {
+                        'exp': datetime.datetime.utcnow() +
+                        datetime.timedelta(days=1, minutes=0),
+                        'iat': datetime.datetime.utcnow(),
+                        'access': user.access,
+                        'email': user.email
+                    }
+                    access_token = jwt.encode(
+                        access_payload,
+                        current_app.config['JWT_SECRET_KEY'],
+                        algorithm='HS256')
+                    return jsonify({'message': 'Token refreshed',
+                                    'accessToken': access_token})
+            else:
+                return jsonify({'message': 'Ooops, validation messed up: ' +
+                                           decoded,
+                                'auth': 0})
+        return jsonify({
+            'message': 'You do not have a token, but we are happy to have you here!',
+            'auth': 0})
+
+
 # class controlling skills resource
-class UserListAdmin(Resource):
+class AdminUserList(Resource):
     @auth_required(3)
     def get(user, self):
         users = list(map(lambda x: x.json(), UserModel.query.all()))

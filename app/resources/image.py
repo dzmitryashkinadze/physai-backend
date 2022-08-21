@@ -13,7 +13,7 @@ def allowed_file(filename):
 
 
 # class controlling bundle resource
-class Image(Resource):
+class AdminImage(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('image', type=datastructures.FileStorage, location='files')
 
@@ -65,7 +65,7 @@ class Image(Resource):
 
 
 # class controlling bundle resource
-class ImageList(Resource):
+class AdminImageList(Resource):
     @auth_required(3)
     def get(user, self):
 

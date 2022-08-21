@@ -23,7 +23,7 @@ class Bundle(Resource):
 
 
 # class controlling bundle resource
-class BundleAdmin(Resource):
+class AdminBundle(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('title')
     parser.add_argument('level')
@@ -85,7 +85,7 @@ class BundleList(Resource):
 
 
 # class controlling bundle resource
-class BundleListAdmin(Resource):
+class AdminBundleList(Resource):
     @auth_required(3)
     def get(user, self):
         data = list(map(lambda x: x.summary(),

@@ -1,9 +1,20 @@
 from flask_restful import Resource, reqparse
+from flask import Response, json
 from app.models.skill import SkillModel
 from app.decorators import auth_required
 
 # class controlling skill resource
 class Skill(Resource):
+    @auth_required(1)
+    def get(user, self, id):
+        skill = SkillModel.find_by_id(int(id))
+        if skill:
+            return skill.json()
+        return {'message': 'Skill not found'}, 404
+
+
+# class controlling skill resource
+class AdminSkill(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('name')
     parser.add_argument('graph')
@@ -49,6 +60,7 @@ class Skill(Resource):
             return {'message': 'Skill deleted.'}
         return {'message': 'Skill not found.'}, 404
 
+
 # class controlling skills resource
 class SkillList(Resource):
     def get(self):
@@ -57,3 +69,12 @@ class SkillList(Resource):
             'skills': skills,
             'n_skills': len(skills)
         }
+
+
+# class controlling skills resource
+class AdminSkillList(Resource):
+    def get(self):
+        data = list(map(lambda x: x.summary(), SkillModel.query.all()))
+        response = Response(json.dumps(data))
+        response.headers['Content-Range'] = len(data)
+        return response
