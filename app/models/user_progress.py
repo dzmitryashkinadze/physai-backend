@@ -8,13 +8,9 @@ class UserProgressModel(db.Model):
 
     # atributes
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, ForeignKey('users.id'))
-    bundle_id = db.Column(db.Integer, ForeignKey('bundles.id'))
+    user_id = db.Column(db.Integer)
+    bundle_id = db.Column(db.Integer)
     progress = db.Column(db.Integer)
-
-    # relationship properties
-    user = relationship('UserModel')
-    bundle = relationship('BundleModel')
 
     def __init__(self, user_id, bundle_id, progress):
         self.user_id = user_id

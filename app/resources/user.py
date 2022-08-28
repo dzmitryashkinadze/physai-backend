@@ -37,7 +37,6 @@ class AdminUser(Resource):
             return user.json()
         else:
             return {"message": 'User not found'}, 201
-            
 
     @auth_required(3)
     def patch(user, self, id):
@@ -65,12 +64,14 @@ class UserValidate(Resource):
 
         auth_header = request.headers.get('Authorization')
         if auth_header:
-            token = auth_header.split(" ")[1] # Parses out the "Bearer" portion
+            # Parses out the "Bearer" portion
+            token = auth_header.split(" ")[1]
         else:
             token = ''
         if token:
             try:
-                decoded = jwt.decode(token, current_app.config['JWT_SECRET_KEY'], algorithms=['HS256'])
+                decoded = jwt.decode(
+                    token, current_app.config['JWT_SECRET_KEY'], algorithms=['HS256'])
             except jwt.ExpiredSignatureError:
                 return {'message': 'token expired',
                         'auth': 0}, 401
@@ -98,12 +99,14 @@ class AdminValidate(Resource):
 
         auth_header = request.headers.get('Authorization')
         if auth_header:
-            token = auth_header.split(" ")[1] # Parses out the "Bearer" portion
+            # Parses out the "Bearer" portion
+            token = auth_header.split(" ")[1]
         else:
             token = ''
         if token:
             try:
-                decoded = jwt.decode(token, current_app.config['JWT_SECRET_KEY'], algorithms=['HS256'])
+                decoded = jwt.decode(
+                    token, current_app.config['JWT_SECRET_KEY'], algorithms=['HS256'])
             except jwt.ExpiredSignatureError:
                 return {'message': 'token expired',
                         'auth': 0}, 401
@@ -152,10 +155,10 @@ class UserRegister(Resource):
             validity = False
             message = "Неверный формат электронной почты"
             status = 1
-        if UserModel.find_by_email(data['email']):
-            validity = False
-            message = "Учетная запись с этой электронной почтой уже существуют"
-            status = 2
+        # if UserModel.find_by_email(data['email']):
+        #    validity = False
+        #    message = "Учетная запись с этой электронной почтой уже существуют"
+        #    status = 2
         if len(data['password']) < 6:
             validity = False
             message = "Пароль должен быть не короче 6 знаков"
@@ -163,8 +166,9 @@ class UserRegister(Resource):
         if validity:
             user = UserModel(
                 email=data['email'],
-                password=sha256_crypt.hash(data['password']),
-                access=1
+                password_hash=sha256_crypt.hash(data['password']),
+                role=1,
+                created=datetime.date.today()
             )
             user.save_to_db()
             message = "Учетная запись успешна зарегистрирована"

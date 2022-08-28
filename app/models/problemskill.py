@@ -8,12 +8,8 @@ class ProblemSkillModel(db.Model):
 
     # atributes
     id = db.Column(db.Integer, primary_key=True)
-    problem_id = db.Column(db.Integer, ForeignKey('problems.id'))
-    skill_id = db.Column(db.Integer, ForeignKey('skills.id'))
-
-    # relationship properties
-    problem = relationship('ProblemModel')
-    skill = relationship('SkillModel')
+    problem_id = db.Column(db.Integer)
+    skill_id = db.Column(db.Integer)
 
     def __init__(self, problem_id, skill_id):
         self.problem_id = problem_id

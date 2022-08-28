@@ -1,40 +1,23 @@
-from app import db
-from sqlalchemy.orm import relationship
+from app.database import db
+
 
 class UserModel(db.Model):
-    __tablename__ = 'users'
+    __tablename__ = "user"
 
     # atributes
     id = db.Column(db.Integer, primary_key=True)
-    password = db.Column(db.String(80))
-    access = db.Column(db.Integer)
-    email = db.Column(db.String(80))
-    firstname = db.Column(db.String(80))
-    lastname = db.Column(db.String(80))
-    birthdate = db.Column(db.String(80))
-    country = db.Column(db.String(80))
+    email = db.Column(db.String(180))
+    password_hash = db.Column(db.String(180))
+    role = db.Column(db.Integer)
+    created = db.Column(db.Date)
 
-    # relationship properties
-    user_progress = relationship('UserProgressModel', back_populates='user')
-
-    def __init__(self, password, access, email, firstname='', lastname='', birthdate='', country=''):
-        self.password = password
-        self.access = access
-        self.email = email
-        self.firstname = firstname
-        self.lastname = lastname
-        self.birthdate = birthdate
-        self.country = country
+    def __init__(self, **kwargs):
+        super(UserModel, self).__init__(**kwargs)
 
     def json(self):
         return {
-            'id': self.id,
             'email': self.email,
-            'lastname': self.lastname,
-            'firstname': self.firstname,
-            'birthdate': self.birthdate,
-            'country': self.country,
-            'access': self.access
+            'role': self.role
         }
 
     def save_to_db(self):

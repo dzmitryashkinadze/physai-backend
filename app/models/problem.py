@@ -10,15 +10,12 @@ class ProblemModel(db.Model):
 
     # atributes
     id = db.Column(db.Integer, primary_key=True)
-    bundle_id = db.Column(db.Integer, ForeignKey('bundles.id'))
+    bundle_id = db.Column(db.Integer)
     text = db.Column(db.String(2000))
     graph = db.Column(db.String(2000))
     problem_number = db.Column(db.Integer)
     access = db.Column(db.Integer)
     difficulty = db.Column(db.Integer)
-
-    # relationship properties
-    bundle = relationship('BundleModel')
 
     def __init__(self, bundle_id, text, graph, problem_number, access, difficulty):
         self.bundle_id = bundle_id

@@ -2,15 +2,10 @@
 from flask import Flask
 from flask_restful import Api
 from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
-# set up the DB connection
-db = SQLAlchemy()
+# migrations
 migrate = Migrate()
-
-# route list
-from app.resources.routes import initialize_routes  # noqa: E402
 
 
 # app factory
@@ -20,17 +15,22 @@ def create_app(config_class):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
+    # init API object and add routes to it
+    api = Api(app)
+    from app.resources.routes import initialize_routes  # noqa: E402
+    initialize_routes(api)
+
     # init DB
+    from .database import db
     db.init_app(app)
     migrate.init_app(app, db)
 
-    # init api API
-    api = Api(app)
+    @app.before_first_request
+    def initialize_database():
+        db.create_all()
 
     # init CORS
-    CORS(app, resources=r'/api/admin/*', headers='Content-Type', expose_headers=['X-Total-Count', 'Content-Range'])
-
-    # create all of the routes
-    initialize_routes(api)
+    CORS(app, resources=r'/api/*', headers='Content-Type',
+         expose_headers=['X-Total-Count', 'Content-Range'])
 
     return app
