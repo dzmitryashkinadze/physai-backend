@@ -2,26 +2,20 @@ from app.database import db
 from sqlalchemy.sql import func
 
 
-class ProblemModel(db.Model):
-    __tablename__ = "problem"
+class UserRatingModel(db.Model):
+    __tablename__ = "user_rating"
 
     # atributes
     id = db.Column(db.Integer, primary_key=True)
-    frame_id = db.Column(db.Integer, db.ForeignKey('frame.id'))
-    description = db.Column(db.String(255))
-    explanation = db.Column(db.String(255))
-    solution = db.Column(db.String(255))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
     time_created = db.Column(db.DateTime(timezone=False),
                              server_default=func.now())
     time_updated = db.Column(db.DateTime(timezone=False),
                              onupdate=func.now())
 
-    # Relationships
-    problem_equation = db.relationship(
-        'ProblemEquationModel', backref='problem', lazy=True)
-
     def __init__(self, **kwargs):
-        super(ProblemModel, self).__init__(**kwargs)
+        super(UserRatingModel, self).__init__(**kwargs)
 
     def json(self):
         return {

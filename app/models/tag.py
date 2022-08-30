@@ -2,26 +2,23 @@ from app.database import db
 from sqlalchemy.sql import func
 
 
-class ProblemModel(db.Model):
-    __tablename__ = "problem"
+class TagModel(db.Model):
+    __tablename__ = "tag"
 
     # atributes
     id = db.Column(db.Integer, primary_key=True)
-    frame_id = db.Column(db.Integer, db.ForeignKey('frame.id'))
-    description = db.Column(db.String(255))
-    explanation = db.Column(db.String(255))
-    solution = db.Column(db.String(255))
+    tag = db.Column(db.String(255))
     time_created = db.Column(db.DateTime(timezone=False),
                              server_default=func.now())
     time_updated = db.Column(db.DateTime(timezone=False),
                              onupdate=func.now())
 
     # Relationships
-    problem_equation = db.relationship(
-        'ProblemEquationModel', backref='problem', lazy=True)
+    course_tag = db.relationship(
+        'CourseTagModel', backref='tag', lazy=True)
 
     def __init__(self, **kwargs):
-        super(ProblemModel, self).__init__(**kwargs)
+        super(TagModel, self).__init__(**kwargs)
 
     def json(self):
         return {

@@ -2,26 +2,30 @@ from app.database import db
 from sqlalchemy.sql import func
 
 
-class ProblemModel(db.Model):
-    __tablename__ = "problem"
+class LessonModel(db.Model):
+    __tablename__ = "lesson"
 
     # atributes
     id = db.Column(db.Integer, primary_key=True)
-    frame_id = db.Column(db.Integer, db.ForeignKey('frame.id'))
+    chapter_id = db.Column(db.Integer, db.ForeignKey('chapter.id'))
+    title = db.Column(db.String(255))
     description = db.Column(db.String(255))
-    explanation = db.Column(db.String(255))
-    solution = db.Column(db.String(255))
+    sequence_id = db.Column(db.Integer)
     time_created = db.Column(db.DateTime(timezone=False),
                              server_default=func.now())
     time_updated = db.Column(db.DateTime(timezone=False),
                              onupdate=func.now())
 
     # Relationships
-    problem_equation = db.relationship(
-        'ProblemEquationModel', backref='problem', lazy=True)
+    user_progress_lesson = db.relationship(
+        'UserProgressLessonModel', backref='lesson', lazy=True)
+    user_active = db.relationship(
+        'UserActiveModel', backref='lesson', lazy=True)
+    frame = db.relationship(
+        'FrameModel', backref='lesson', lazy=True)
 
     def __init__(self, **kwargs):
-        super(ProblemModel, self).__init__(**kwargs)
+        super(LessonModel, self).__init__(**kwargs)
 
     def json(self):
         return {
