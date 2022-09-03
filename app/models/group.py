@@ -9,21 +9,30 @@ class GroupModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255))
     description = db.Column(db.String(255))
+    visible = db.Column(db.Boolean, default=False)
     time_created = db.Column(db.DateTime(timezone=False),
                              server_default=func.now())
     time_updated = db.Column(db.DateTime(timezone=False),
                              onupdate=func.now())
 
     # Relationships
-    group_course = db.relationship(
-        'GroupCourseModel', backref='group', lazy=True)
+    courses = db.relationship(
+        'CourseModel', backref='group', lazy=True)
 
     def __init__(self, **kwargs):
         super(GroupModel, self).__init__(**kwargs)
 
     def json(self):
         return {
+            'id': self.id,
+            "title": self.title,
+            "description": self.description,
+            "visible": self.visible
         }
+
+    def update(self, **kwargs):
+        for key in kwargs.keys():
+            setattr(self, key, kwargs[key])
 
     def save_to_db(self):
         db.session.add(self)

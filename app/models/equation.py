@@ -10,6 +10,7 @@ class EquationModel(db.Model):
     title = db.Column(db.String(255))
     description = db.Column(db.String(255))
     equation = db.Column(db.String(255))
+    visible = db.Column(db.Boolean, default=False)
     time_created = db.Column(db.DateTime(timezone=False),
                              server_default=func.now())
     time_updated = db.Column(db.DateTime(timezone=False),
@@ -26,7 +27,16 @@ class EquationModel(db.Model):
 
     def json(self):
         return {
+            'id': self.id,
+            'title': self.title,
+            'description': self.description,
+            'equation': self.equation,
+            'visible': self.visible,
         }
+
+    def update(self, **kwargs):
+        for key in kwargs.keys():
+            setattr(self, key, kwargs[key])
 
     def save_to_db(self):
         db.session.add(self)

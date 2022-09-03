@@ -11,6 +11,7 @@ class ProblemModel(db.Model):
     description = db.Column(db.String(255))
     explanation = db.Column(db.String(255))
     solution = db.Column(db.String(255))
+    visible = db.Column(db.Boolean, default=False)
     time_created = db.Column(db.DateTime(timezone=False),
                              server_default=func.now())
     time_updated = db.Column(db.DateTime(timezone=False),
@@ -25,7 +26,17 @@ class ProblemModel(db.Model):
 
     def json(self):
         return {
+            'id': self.id,
+            'frame_id': self.frame_id,
+            'description': self.description,
+            'explanation': self.explanation,
+            'solution': self.solution,
+            'visible': self.visible,
         }
+
+    def update(self, **kwargs):
+        for key in kwargs.keys():
+            setattr(self, key, kwargs[key])
 
     def save_to_db(self):
         db.session.add(self)

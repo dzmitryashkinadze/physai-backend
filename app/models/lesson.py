@@ -11,6 +11,7 @@ class LessonModel(db.Model):
     title = db.Column(db.String(255))
     description = db.Column(db.String(255))
     sequence_id = db.Column(db.Integer)
+    visible = db.Column(db.Boolean, default=False)
     time_created = db.Column(db.DateTime(timezone=False),
                              server_default=func.now())
     time_updated = db.Column(db.DateTime(timezone=False),
@@ -29,7 +30,17 @@ class LessonModel(db.Model):
 
     def json(self):
         return {
+            'id': self.id,
+            'chapter_id': self.chapter_id,
+            'title': self.title,
+            'description': self.description,
+            'sequence_id': self.sequence_id,
+            'visible': self.visible
         }
+
+    def update(self, **kwargs):
+        for key in kwargs.keys():
+            setattr(self, key, kwargs[key])
 
     def save_to_db(self):
         db.session.add(self)

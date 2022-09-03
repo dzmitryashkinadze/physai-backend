@@ -20,7 +20,15 @@ class UserFeedbackModel(db.Model):
 
     def json(self):
         return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'course_id': self.course_id,
+            'feedback': self.feedback
         }
+
+    def update(self, **kwargs):
+        for key in kwargs.keys():
+            setattr(self, key, kwargs[key])
 
     def save_to_db(self):
         db.session.add(self)

@@ -22,7 +22,17 @@ class UserDetailModel(db.Model):
 
     def json(self):
         return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'country': self.country,
+            'birth_date': self.birth_date,
         }
+
+    def update(self, **kwargs):
+        for key in kwargs.keys():
+            setattr(self, key, kwargs[key])
 
     def save_to_db(self):
         db.session.add(self)

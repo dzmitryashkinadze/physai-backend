@@ -32,9 +32,14 @@ class UserModel(db.Model):
 
     def json(self):
         return {
+            'id': self.id,
             'email': self.email,
             'role': self.role
         }
+
+    def update(self, **kwargs):
+        for key in kwargs.keys():
+            setattr(self, key, kwargs[key])
 
     def save_to_db(self):
         db.session.add(self)

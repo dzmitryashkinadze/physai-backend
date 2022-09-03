@@ -20,7 +20,15 @@ class MCQChoiceModel(db.Model):
 
     def json(self):
         return {
+            'id': self.id,
+            'mcq_id': self.mcq_id,
+            'text': self.text,
+            'correct': self.correct,
         }
+
+    def update(self, **kwargs):
+        for key in kwargs.keys():
+            setattr(self, key, kwargs[key])
 
     def save_to_db(self):
         db.session.add(self)

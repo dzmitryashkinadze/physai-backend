@@ -36,7 +36,8 @@ class GraphSolver():
         for node in json_graph['nodes']:
             graph.add_node(int(node))
             for attribute in json_graph['nodes'][node]:
-                graph.nodes[int(node)][attribute] = json_graph['nodes'][node][attribute]
+                graph.nodes[int(
+                    node)][attribute] = json_graph['nodes'][node][attribute]
         for edge in json_graph['edges']:
             graph.add_edge(json_graph['edges'][edge]['origin'],
                            json_graph['edges'][edge]['target'],
@@ -44,7 +45,7 @@ class GraphSolver():
             if ('target-port' in json_graph['edges'][edge]):
                 graph.edges[json_graph['edges'][edge]['origin'],
                             json_graph['edges'][edge]['target']]['target-port'] = \
-                            json_graph['edges'][edge]['target-port']
+                    json_graph['edges'][edge]['target-port']
         return graph
 
     # Prepare the graph after import from graphml
@@ -91,7 +92,8 @@ class GraphSolver():
                     Graph.nodes[i[0]]['known'] = True
                 if Graph.nodes[i[0]]['state'] == 'solution':
                     value = float(Graph.nodes[i[0]]['value'])
-                    Graph.nodes[i[0]]['ExpectedValue'] = value * base_unit_factor
+                    Graph.nodes[i[0]]['ExpectedValue'] = value * \
+                        base_unit_factor
                     Graph.nodes[i[0]]['known'] = False
                 if Graph.nodes[i[0]]['state'] == 'unknown':
                     Graph.nodes[i[0]]['known'] = False
@@ -126,24 +128,26 @@ class GraphSolver():
             if self.G.nodes[i]['SY_Var'] not in solution.keys():
                 result['Solved'] = False
                 result['Error'] = {
-                        'Type': 'Система уравнений составлена не верно'
-                    }
+                    'Type': 'Система уравнений составлена не верно'
+                }
             elif float(solution[self.G.nodes[i]['SY_Var']]) != float(VariablesToBeFound[i]):
                 if self.Debug:
                     print('Variable:', self.G.nodes[i]['SY_Var'])
                     print('Expected result:', float(VariablesToBeFound[i]))
-                    print('Solution:', float(solution[self.G.nodes[i]['SY_Var']]))
+                    print('Solution:', float(
+                        solution[self.G.nodes[i]['SY_Var']]))
                 result['Solved'] = False
                 result['Error'] = {
-                        'Type': 'Система уравнений составлена не верно'
-                    }
+                    'Type': 'Система уравнений составлена не верно'
+                }
         for i in EquationsToBeParsed.keys():
             if result['Solved']:
                 parsing = str(self.Parse_Eq(i, Ignore_List=[])[0])
                 # Remove white spaces
                 parsing = ''.join(parsing.split())
                 if self.Debug:
-                    print('Equation', i, 'was expected to be ', EquationsToBeParsed[i])
+                    print('Equation', i, 'was expected to be ',
+                          EquationsToBeParsed[i])
                     print('Equation', i, 'was parsed as', parsing)
                 if self.error == {}:
                     if parsing != EquationsToBeParsed[i]:
@@ -184,7 +188,7 @@ class GraphSolver():
     # Instruction 4: Equation(Multiplication gate) = Product of w_i f_i,
     # where i are the neighbours
     # Instruction 5: Equation(Power gate) = w_1 f_1 ** (w_2 f_2),
-    # where 1 and 2 are the neighbours, 
+    # where 1 and 2 are the neighbours,
     # number of the base is located in the power gate atribute 'base'
     # Instruction 6: Equation(ABS gate) = abs(neighbour)
     # Ignore list is the list of nodes that were inspected before (to stop the algorithm to go back)
@@ -260,9 +264,12 @@ class GraphSolver():
                         if not (j in Ignore_List):
                             Ignore_List = [NodeNum]
                             PartialEquation = self.Parse_Eq(j, Ignore_List)
-                            Numeric_Eq += self.G.edges[i]['weight'] * PartialEquation[0]
-                            Symbolic_Eq += self.G.edges[i]['weight'] * PartialEquation[1]
-                            Symbolic_Repr += self.G.edges[i]['weight'] * PartialEquation[2]
+                            Numeric_Eq += self.G.edges[i]['weight'] * \
+                                PartialEquation[0]
+                            Symbolic_Eq += self.G.edges[i]['weight'] * \
+                                PartialEquation[1]
+                            Symbolic_Repr += self.G.edges[i]['weight'] * \
+                                PartialEquation[2]
                             Unit = PartialEquation[3]
                             if MasterUnit is None:
                                 MasterUnit = Unit
@@ -281,9 +288,12 @@ class GraphSolver():
             for (j, i) in self.G.in_edges(NodeNum):
                 if not (j in Ignore_List):
                     PartialEquation = self.Parse_Eq(j, Ignore_List)
-                    Numeric_Eq *= self.G.edges[j, i]['weight'] * PartialEquation[0]
-                    Symbolic_Eq *= self.G.edges[j, i]['weight'] * PartialEquation[1]
-                    Symbolic_Repr *= self.G.edges[j, i]['weight'] * PartialEquation[2]
+                    Numeric_Eq *= self.G.edges[j,
+                                               i]['weight'] * PartialEquation[0]
+                    Symbolic_Eq *= self.G.edges[j,
+                                                i]['weight'] * PartialEquation[1]
+                    Symbolic_Repr *= self.G.edges[j,
+                                                  i]['weight'] * PartialEquation[2]
                     LocalUnit = PartialEquation[3]
                     if (LocalUnit is not None) and (Unit is not None):
                         Unit *= LocalUnit
@@ -298,9 +308,12 @@ class GraphSolver():
             for (j, i) in self.G.in_edges(NodeNum):
                 if not (j in Ignore_List):
                     PartialEquation = self.Parse_Eq(j, Ignore_List)
-                    Numeric_Eq += self.G.edges[j, i]['weight'] * PartialEquation[0]
-                    Symbolic_Eq += self.G.edges[j, i]['weight'] * PartialEquation[1]
-                    Symbolic_Repr += self.G.edges[j, i]['weight'] * PartialEquation[2]
+                    Numeric_Eq += self.G.edges[j,
+                                               i]['weight'] * PartialEquation[0]
+                    Symbolic_Eq += self.G.edges[j,
+                                                i]['weight'] * PartialEquation[1]
+                    Symbolic_Repr += self.G.edges[j,
+                                                  i]['weight'] * PartialEquation[2]
                     Unit = PartialEquation[3]
                     if MasterUnit is None:
                         MasterUnit = Unit
@@ -317,14 +330,18 @@ class GraphSolver():
             PartialEquationBase = self.Parse_Eq(base, Ignore_List)
             PartialEquationPower = self.Parse_Eq(power, Ignore_List)
             Numeric_Eq = (self.G.edges[base, NodeNum]['weight'] * PartialEquationBase[0]) ** \
-                         (self.G.edges[power, NodeNum]['weight'] * PartialEquationPower[0])
+                         (self.G.edges[power, NodeNum]
+                          ['weight'] * PartialEquationPower[0])
             Symbolic_Eq = (self.G.edges[base, NodeNum]['weight'] * PartialEquationBase[1]) ** \
-                          (self.G.edges[power, NodeNum]['weight'] * PartialEquationPower[1])
+                          (self.G.edges[power, NodeNum]
+                           ['weight'] * PartialEquationPower[1])
             Symbolic_Repr = (self.G.edges[base, NodeNum]['weight'] * PartialEquationBase[2]) ** \
-                            (self.G.edges[power, NodeNum]['weight'] * PartialEquationPower[2])
+                            (self.G.edges[power, NodeNum]
+                             ['weight'] * PartialEquationPower[2])
             # Check if power can be evaluated
             BaseUnit = PartialEquationBase[3]
-            Power = self.G.edges[power, NodeNum]['weight'] * PartialEquationPower[0]
+            Power = self.G.edges[power, NodeNum]['weight'] * \
+                PartialEquationPower[0]
             if isinstance(Power, float) and (BaseUnit is not None):
                 Unit = BaseUnit ** Power
             else:
