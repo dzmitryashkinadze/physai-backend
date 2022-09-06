@@ -7,22 +7,32 @@ class LessonModel(db.Model):
 
     # atributes
     id = db.Column(db.Integer, primary_key=True)
-    chapter_id = db.Column(db.Integer, db.ForeignKey('chapter.id'))
-    title = db.Column(db.String(255))
-    description = db.Column(db.String(255))
-    sequence_id = db.Column(db.Integer)
-    visible = db.Column(db.Boolean, default=False)
+    chapter_id = db.Column(db.Integer,
+                           db.ForeignKey('chapter.id'),
+                           nullable=False)
+    course_id = db.Column(db.Integer,
+                          db.ForeignKey('course.id'),
+                          nullable=False)
+    title = db.Column(db.String(255),
+                      nullable=False)
+    description = db.Column(db.Text,
+                            nullable=False)
+    sequence_id = db.Column(db.Integer,
+                            nullable=False)
+    visible = db.Column(db.Boolean, default=False,
+                        nullable=False)
     time_created = db.Column(db.DateTime(timezone=False),
-                             server_default=func.now())
+                             server_default=func.now(),
+                             nullable=False)
     time_updated = db.Column(db.DateTime(timezone=False),
                              onupdate=func.now())
 
     # Relationships
-    user_progress_lesson = db.relationship(
+    user_progress_lessons = db.relationship(
         'UserProgressLessonModel', backref='lesson', lazy=True)
-    user_active = db.relationship(
+    user_actives = db.relationship(
         'UserActiveModel', backref='lesson', lazy=True)
-    frame = db.relationship(
+    frames = db.relationship(
         'FrameModel', backref='lesson', lazy=True)
 
     def __init__(self, **kwargs):
@@ -32,10 +42,11 @@ class LessonModel(db.Model):
         return {
             'id': self.id,
             'chapter_id': self.chapter_id,
+            'course_id': self.course_id,
             'title': self.title,
             'description': self.description,
             'sequence_id': self.sequence_id,
-            'visible': self.visible
+            'visible': self.visible,
         }
 
     def update(self, **kwargs):

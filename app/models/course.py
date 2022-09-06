@@ -7,36 +7,49 @@ class CourseModel(db.Model):
 
     # atributes
     id = db.Column(db.Integer, primary_key=True)
-    group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
-    title = db.Column(db.String(255))
-    summary = db.Column(db.String(255))
-    description = db.Column(db.String(255))
-    logo_path = db.Column(db.String(255))
-    frame_number = db.Column(db.Integer)
-    concept_number = db.Column(db.Integer)
-    test_number = db.Column(db.Integer)
-    problem_number = db.Column(db.Integer)
-    visible = db.Column(db.Boolean, default=False)
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'),
+                         nullable=False)
+    title = db.Column(db.String(255),
+                      nullable=False)
+    summary = db.Column(db.Text,
+                        nullable=False)
+    description = db.Column(db.Text,
+                            nullable=False)
+    logo_path = db.Column(db.String(255),
+                          nullable=False)
+    sequence_id = db.Column(db.Integer,
+                            nullable=False)
+    visible = db.Column(db.Boolean, default=False,
+                        nullable=False)
     time_created = db.Column(db.DateTime(timezone=False),
-                             server_default=func.now())
+                             server_default=func.now(),
+                             nullable=False)
     time_updated = db.Column(db.DateTime(timezone=False),
                              onupdate=func.now())
 
     # Relationships
-    user_rating = db.relationship(
+    user_ratings = db.relationship(
         'UserRatingModel', backref='course', lazy=True)
-    user_feedback = db.relationship(
+    user_feedbacks = db.relationship(
         'UserFeedbackModel', backref='course', lazy=True)
-    user_progress_course = db.relationship(
+    user_progress_courses = db.relationship(
         'UserProgressCourseModel', backref='course', lazy=True)
-    user_active = db.relationship(
+    user_actives = db.relationship(
         'UserActiveModel', backref='course', lazy=True)
-    course_tag = db.relationship(
+    course_tags = db.relationship(
         'CourseTagModel', backref='course', lazy=True)
-    chapter = db.relationship(
+    chapters = db.relationship(
         'ChapterModel', backref='course', lazy=True)
-    course_equation = db.relationship(
+    course_equations = db.relationship(
         'CourseEquationModel', backref='course', lazy=True)
+    frames = db.relationship(
+        'FrameModel', backref='course', lazy=True)
+    concepts = db.relationship(
+        'ConceptModel', backref='course', lazy=True)
+    tests = db.relationship(
+        'TestModel', backref='course', lazy=True)
+    problems = db.relationship(
+        'ProblemModel', backref='course', lazy=True)
 
     def __init__(self, **kwargs):
         super(CourseModel, self).__init__(**kwargs)
@@ -49,11 +62,8 @@ class CourseModel(db.Model):
             'summary': self.summary,
             'description': self.description,
             'logo_path': self.logo_path,
-            'frame_number': self.frame_number,
-            'concept_number': self.concept_number,
-            'test_number': self.test_number,
-            'problem_number': self.problem_number,
-            'visible': self.visible
+            'sequence_id': self.sequence_id,
+            'visible': self.visible,
         }
 
     def update(self, **kwargs):

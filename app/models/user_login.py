@@ -7,9 +7,11 @@ class UserLoginModel(db.Model):
 
     # atributes
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),
+                        nullable=False)
     time_created = db.Column(db.DateTime(timezone=False),
-                             server_default=func.now())
+                             server_default=func.now(),
+                             nullable=False)
     time_updated = db.Column(db.DateTime(timezone=False),
                              onupdate=func.now())
 

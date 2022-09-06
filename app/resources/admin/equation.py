@@ -16,26 +16,26 @@ class AdminEquation(Resource):
         raw = EquationModel.find_by_id(int(id))
         if raw:
             return raw.json()
-        return {'message': 'Problem not found'}, 404
+        return {'message': 'raw not found'}, 404
 
     @auth_required(3)
     def put(user, self, id):
         data = AdminEquation.parser.parse_args()
-        problem = EquationModel.find_by_id(int(id))
-        if problem:
-            problem.update(**data)
+        raw = EquationModel.find_by_id(int(id))
+        if raw:
+            raw.update(**data)
         else:
-            {'message': 'Problem not found'}, 404
-        problem.save_to_db()
-        return problem.json()
+            {'message': 'raw not found'}, 404
+        raw.save_to_db()
+        return raw.json()
 
     @auth_required(3)
     def delete(user, self, id):
         raw = EquationModel.find_by_id(int(id))
         if raw:
             raw.delete_from_db()
-            return {'message': 'Problem deleted.'}
-        return {'message': 'Problem not found.'}, 404
+            return {'message': 'raw deleted.'}
+        return {'message': 'raw not found.'}, 404
 
 
 class AdminEquationList(Resource):
@@ -50,15 +50,8 @@ class AdminEquationList(Resource):
     def post(user, self):
         data = AdminEquation.parser.parse_args()
         try:
-            raw = EquationModel(
-                bundle_id=data['bundle_id'],
-                text=data['text'],
-                graph=data['graph'],
-                problem_number=data['problem_number'],
-                access=data['access'],
-                difficulty=data['difficulty']
-            )
+            raw = EquationModel(**data)
             raw.save_to_db()
         except Exception:
-            return {'message': 'Error with problem creation'}, 404
+            return {'message': 'Error with raw creation'}, 404
         return raw.json(), 201

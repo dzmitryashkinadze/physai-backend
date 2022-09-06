@@ -7,14 +7,16 @@ class TagModel(db.Model):
 
     # atributes
     id = db.Column(db.Integer, primary_key=True)
-    tag = db.Column(db.String(255))
+    tag = db.Column(db.String(255),
+                    nullable=False)
     time_created = db.Column(db.DateTime(timezone=False),
-                             server_default=func.now())
+                             server_default=func.now(),
+                             nullable=False)
     time_updated = db.Column(db.DateTime(timezone=False),
                              onupdate=func.now())
 
     # Relationships
-    course_tag = db.relationship(
+    course_tags = db.relationship(
         'CourseTagModel', backref='tag', lazy=True)
 
     def __init__(self, **kwargs):

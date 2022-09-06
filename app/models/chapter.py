@@ -7,13 +7,19 @@ class ChapterModel(db.Model):
 
     # atributes
     id = db.Column(db.Integer, primary_key=True)
-    course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
-    title = db.Column(db.String(255))
-    description = db.Column(db.String(255))
-    sequence_id = db.Column(db.Integer)
-    visible = db.Column(db.Boolean, default=False)
+    course_id = db.Column(db.Integer, db.ForeignKey('course.id'),
+                          nullable=False)
+    title = db.Column(db.String(255),
+                      nullable=False)
+    description = db.Column(db.Text,
+                            nullable=False)
+    sequence_id = db.Column(db.Integer,
+                            nullable=False)
+    visible = db.Column(db.Boolean, default=False,
+                        nullable=False)
     time_created = db.Column(db.DateTime(timezone=False),
-                             server_default=func.now())
+                             server_default=func.now(),
+                             nullable=False)
     time_updated = db.Column(db.DateTime(timezone=False),
                              onupdate=func.now())
 

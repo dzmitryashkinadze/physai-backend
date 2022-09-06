@@ -16,15 +16,18 @@ class UserModel(db.Model):
                              onupdate=func.now())
 
     # Relationships
-    user_login = db.relationship('UserLoginModel', backref='user', lazy=True)
-    user_detail = db.relationship('UserDetailModel', backref='user', lazy=True)
-    user_rating = db.relationship('UserRatingModel', backref='user', lazy=True)
-    user_progress_lesson = db.relationship(
+    user_logins = db.relationship('UserLoginModel', backref='user', lazy=True)
+    user_details = db.relationship(
+        'UserDetailModel', backref='user', lazy=True)
+    user_ratings = db.relationship(
+        'UserRatingModel', backref='user', lazy=True)
+    user_progress_lessons = db.relationship(
         'UserProgressLessonModel', backref='user', lazy=True)
-    user_progress_course = db.relationship(
+    user_progress_courses = db.relationship(
         'UserProgressCourseModel', backref='user', lazy=True)
-    user_active = db.relationship('UserActiveModel', backref='user', lazy=True)
-    user_feedback = db.relationship(
+    user_active = db.relationship(
+        'UserActiveModel', backref='user', lazy=True, uselist=False)
+    user_feedbacks = db.relationship(
         'UserFeedbackModel', backref='user', lazy=True)
 
     def __init__(self, **kwargs):

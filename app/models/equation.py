@@ -7,19 +7,24 @@ class EquationModel(db.Model):
 
     # atributes
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(255))
-    description = db.Column(db.String(255))
-    equation = db.Column(db.String(255))
-    visible = db.Column(db.Boolean, default=False)
+    title = db.Column(db.String(255),
+                      nullable=False)
+    description = db.Column(db.Text,
+                            nullable=False)
+    equation = db.Column(db.String(255),
+                         nullable=False)
+    visible = db.Column(db.Boolean, default=False,
+                        nullable=False)
     time_created = db.Column(db.DateTime(timezone=False),
-                             server_default=func.now())
+                             server_default=func.now(),
+                             nullable=False)
     time_updated = db.Column(db.DateTime(timezone=False),
                              onupdate=func.now())
 
     # Relationships
-    course_equation = db.relationship(
+    course_equations = db.relationship(
         'CourseEquationModel', backref='equation', lazy=True)
-    problem_equation = db.relationship(
+    problem_equations = db.relationship(
         'ProblemEquationModel', backref='equation', lazy=True)
 
     def __init__(self, **kwargs):

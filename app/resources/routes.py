@@ -16,7 +16,7 @@ from app.resources.user.register import UserRegister
 from app.resources.user.user_login import UserLogin
 from app.resources.user.validate import UserValidate
 from app.resources.user.refresh_token import UserRefreshToken
-from app.resources.user.group import GroupList
+from app.resources.user.course import CourseList
 # admin resource classes
 from app.resources.admin.login import AdminLogin
 from app.resources.admin.validate import AdminValidate
@@ -35,6 +35,7 @@ from app.resources.admin.mcq import AdminMCQ, AdminMCQList
 from app.resources.admin.problem_equation import AdminProblemEquation, AdminProblemEquationList
 from app.resources.admin.problem import AdminProblem, AdminProblemList
 from app.resources.admin.tag import AdminTag, AdminTagList
+from app.resources.admin.test import AdminTest, AdminTestList
 from app.resources.admin.user_active import AdminUserActive, AdminUserActiveList
 from app.resources.admin.user_detail import AdminUserDetail, AdminUserDetailList
 from app.resources.admin.user_feedback import AdminUserFeedback, AdminUserFeedbackList
@@ -56,7 +57,7 @@ def initialize_routes(api):
     api.add_resource(UserValidate, '/api/validate')
     api.add_resource(UserRefreshToken, '/api/refresh_token')
     # Resource: group
-    api.add_resource(GroupList, '/api/groups')
+    api.add_resource(CourseList, '/api/get_courses')
     #api.add_resource(Bundle, '/api/bundles/<string:id>')
     #api.add_resource(BundleList, '/api/bundles')
     # Resource: user
@@ -109,6 +110,8 @@ def initialize_routes(api):
     api.add_resource(AdminProblemList, '/api/admin/problems')
     api.add_resource(AdminTag, '/api/admin/tags/<string:id>')
     api.add_resource(AdminTagList, '/api/admin/tags')
+    api.add_resource(AdminTest, '/api/admin/tests/<string:id>')
+    api.add_resource(AdminTestList, '/api/admin/tests')
     api.add_resource(AdminUserActive, '/api/admin/user_actives/<string:id>')
     api.add_resource(AdminUserActiveList, '/api/admin/user_actives')
     api.add_resource(AdminUserDetail, '/api/admin/user_details/<string:id>')

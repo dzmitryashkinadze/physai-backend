@@ -7,17 +7,20 @@ class MCQModel(db.Model):
 
     # atributes
     id = db.Column(db.Integer, primary_key=True)
-    frame_id = db.Column(db.Integer, db.ForeignKey('frame.id'))
-    question = db.Column(db.String(255))
-    explanation = db.Column(db.String(255))
-    visible = db.Column(db.Boolean, default=False)
+    test_id = db.Column(db.Integer, db.ForeignKey('test.id'),
+                        nullable=False)
+    question = db.Column(db.String(255),
+                         nullable=False)
+    explanation = db.Column(db.String(255),
+                            nullable=False)
     time_created = db.Column(db.DateTime(timezone=False),
-                             server_default=func.now())
+                             server_default=func.now(),
+                             nullable=False)
     time_updated = db.Column(db.DateTime(timezone=False),
                              onupdate=func.now())
 
     # Relationships
-    mcq_choice = db.relationship(
+    mcq_choices = db.relationship(
         'MCQChoiceModel', backref='mcq', lazy=True)
 
     def __init__(self, **kwargs):
@@ -26,10 +29,9 @@ class MCQModel(db.Model):
     def json(self):
         return {
             'id': self.id,
-            'frame_id': self.frame_id,
+            'test_id': self.test_id,
             'question': self.question,
-            'explanation': self.explanation,
-            'visible': self.visible,
+            'explanation': self.explanation
         }
 
     def update(self, **kwargs):

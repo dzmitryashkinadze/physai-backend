@@ -7,23 +7,29 @@ class FrameModel(db.Model):
 
     # atributes
     id = db.Column(db.Integer, primary_key=True)
-    lesson_id = db.Column(db.Integer, db.ForeignKey('lesson.id'))
-    sequence_id = db.Column(db.Integer)
-    visible = db.Column(db.Boolean, default=False)
+    lesson_id = db.Column(db.Integer, db.ForeignKey('lesson.id'),
+                          nullable=False)
+    course_id = db.Column(db.Integer, db.ForeignKey('course.id'),
+                          nullable=False)
+    sequence_id = db.Column(db.Integer,
+                            nullable=False)
+    visible = db.Column(db.Boolean, default=False,
+                        nullable=False)
     time_created = db.Column(db.DateTime(timezone=False),
-                             server_default=func.now())
+                             server_default=func.now(),
+                             nullable=False)
     time_updated = db.Column(db.DateTime(timezone=False),
                              onupdate=func.now())
 
     # Relationships
-    user_active = db.relationship(
+    user_actives = db.relationship(
         'UserActiveModel', backref='frame', lazy=True)
     concept = db.relationship(
-        'ConceptModel', backref='frame', lazy=True)
-    mcq = db.relationship(
-        'MCQModel', backref='frame', lazy=True)
+        'ConceptModel', backref='frame', lazy=True, uselist=False)
+    test = db.relationship(
+        'TestModel', backref='frame', lazy=True, uselist=False)
     problem = db.relationship(
-        'ProblemModel', backref='frame', lazy=True)
+        'ProblemModel', backref='frame', lazy=True, uselist=False)
 
     def __init__(self, **kwargs):
         super(FrameModel, self).__init__(**kwargs)
@@ -32,6 +38,7 @@ class FrameModel(db.Model):
         return {
             'id': self.id,
             'lesson_id': self.lesson_id,
+            'course_id': self.course_id,
             'sequence_id': self.sequence_id,
             'visible': self.visible
         }

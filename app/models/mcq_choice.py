@@ -7,11 +7,15 @@ class MCQChoiceModel(db.Model):
 
     # atributes
     id = db.Column(db.Integer, primary_key=True)
-    mcq_id = db.Column(db.Integer, db.ForeignKey('mcq.id'))
-    text = db.Column(db.String(255))
-    correct = db.Column(db.Boolean)
+    mcq_id = db.Column(db.Integer, db.ForeignKey('mcq.id'),
+                       nullable=False)
+    text = db.Column(db.String(255),
+                     nullable=False)
+    correct = db.Column(db.Boolean,
+                        nullable=False)
     time_created = db.Column(db.DateTime(timezone=False),
-                             server_default=func.now())
+                             server_default=func.now(),
+                             nullable=False)
     time_updated = db.Column(db.DateTime(timezone=False),
                              onupdate=func.now())
 

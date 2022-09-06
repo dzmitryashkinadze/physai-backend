@@ -9,33 +9,34 @@ class AdminGroup(Resource):
     parser.add_argument('title', type=str)
     parser.add_argument('visible', type=bool)
     parser.add_argument('description', type=str)
+    parser.add_argument('sequence_id', type=int)
 
     @auth_required(3)
     def get(user, self, id):
         raw = GroupModel.find_by_id(int(id))
         if raw:
             return raw.json()
-        return {'message': 'Problem not found'}, 404
+        return {'message': 'raw not found'}, 404
 
     @auth_required(3)
     def put(user, self, id):
         data = AdminGroup.parser.parse_args()
         print(data)
-        problem = GroupModel.find_by_id(int(id))
-        if problem:
-            problem.update(**data)
+        raw = GroupModel.find_by_id(int(id))
+        if raw:
+            raw.update(**data)
         else:
-            {'message': 'Problem not found'}, 404
-        problem.save_to_db()
-        return problem.json()
+            {'message': 'raw not found'}, 404
+        raw.save_to_db()
+        return raw.json()
 
     @auth_required(3)
     def delete(user, self, id):
         raw = GroupModel.find_by_id(int(id))
         if raw:
             raw.delete_from_db()
-            return {'message': 'Problem deleted.'}
-        return {'message': 'Problem not found.'}, 404
+            return {'message': 'raw deleted.'}
+        return {'message': 'raw not found.'}, 404
 
 
 class AdminGroupList(Resource):
@@ -50,11 +51,8 @@ class AdminGroupList(Resource):
     def post(user, self):
         data = AdminGroup.parser.parse_args()
         try:
-            raw = GroupModel(
-                title=data['title'],
-                description=data['description'],
-            )
+            raw = GroupModel(**data)
             raw.save_to_db()
         except Exception:
-            return {'message': 'Error with problem creation'}, 404
+            return {'message': 'Error with raw creation'}, 404
         return raw.json(), 201

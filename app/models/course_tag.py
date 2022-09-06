@@ -7,10 +7,13 @@ class CourseTagModel(db.Model):
 
     # atributes
     id = db.Column(db.Integer, primary_key=True)
-    course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
-    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'))
+    course_id = db.Column(db.Integer, db.ForeignKey('course.id'),
+                          nullable=False)
+    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'),
+                       nullable=False)
     time_created = db.Column(db.DateTime(timezone=False),
-                             server_default=func.now())
+                             server_default=func.now(),
+                             nullable=False)
     time_updated = db.Column(db.DateTime(timezone=False),
                              onupdate=func.now())
 

@@ -7,11 +7,15 @@ class ConceptModel(db.Model):
 
     # atributes
     id = db.Column(db.Integer, primary_key=True)
-    frame_id = db.Column(db.Integer, db.ForeignKey('frame.id'))
-    text = db.Column(db.String(255))
-    visible = db.Column(db.Boolean, default=False)
+    frame_id = db.Column(db.Integer, db.ForeignKey('frame.id'),
+                         nullable=False)
+    course_id = db.Column(db.Integer, db.ForeignKey('course.id'),
+                          nullable=False)
+    text = db.Column(db.Text,
+                     nullable=False)
     time_created = db.Column(db.DateTime(timezone=False),
-                             server_default=func.now())
+                             server_default=func.now(),
+                             nullable=False)
     time_updated = db.Column(db.DateTime(timezone=False),
                              onupdate=func.now())
 
@@ -22,8 +26,8 @@ class ConceptModel(db.Model):
         return {
             'id': self.id,
             'frame_id': self.frame_id,
-            'text': self.text,
-            'visible': self.visible
+            'course_id': self.course_id,
+            'text': self.text
         }
 
     def update(self, **kwargs):

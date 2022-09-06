@@ -7,10 +7,13 @@ class ProblemEquationModel(db.Model):
 
     # atributes
     id = db.Column(db.Integer, primary_key=True)
-    problem_id = db.Column(db.Integer, db.ForeignKey('problem.id'))
-    equation_id = db.Column(db.Integer, db.ForeignKey('equation.id'))
+    problem_id = db.Column(db.Integer, db.ForeignKey('problem.id'),
+                           nullable=False)
+    equation_id = db.Column(db.Integer, db.ForeignKey('equation.id'),
+                            nullable=False)
     time_created = db.Column(db.DateTime(timezone=False),
-                             server_default=func.now())
+                             server_default=func.now(),
+                             nullable=False)
     time_updated = db.Column(db.DateTime(timezone=False),
                              onupdate=func.now())
 

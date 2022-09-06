@@ -7,11 +7,17 @@ class GroupModel(db.Model):
 
     # atributes
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(255))
-    description = db.Column(db.String(255))
-    visible = db.Column(db.Boolean, default=False)
+    title = db.Column(db.String(255),
+                      nullable=False)
+    description = db.Column(db.String(255),
+                            nullable=False)
+    sequence_id = db.Column(db.Integer,
+                            nullable=False)
+    visible = db.Column(db.Boolean, default=False,
+                        nullable=False)
     time_created = db.Column(db.DateTime(timezone=False),
-                             server_default=func.now())
+                             server_default=func.now(),
+                             nullable=False)
     time_updated = db.Column(db.DateTime(timezone=False),
                              onupdate=func.now())
 
@@ -27,7 +33,8 @@ class GroupModel(db.Model):
             'id': self.id,
             "title": self.title,
             "description": self.description,
-            "visible": self.visible
+            "sequence_id": self.sequence_id,
+            "visible": self.visible,
         }
 
     def update(self, **kwargs):
