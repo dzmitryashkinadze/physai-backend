@@ -12,6 +12,7 @@ class AdminLesson(Resource):
     parser.add_argument('course_id', type=int)
     parser.add_argument('sequence_id', type=int)
     parser.add_argument('visible', type=bool)
+    parser.add_argument('logo_path', type=str)
 
     @auth_required(3)
     def get(user, self, id):

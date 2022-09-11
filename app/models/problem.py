@@ -1,5 +1,6 @@
 from app.database import db
 from sqlalchemy.sql import func
+from app.models.many_to_many_tables import problem_equation
 
 
 class ProblemModel(db.Model):
@@ -24,8 +25,10 @@ class ProblemModel(db.Model):
                              onupdate=func.now())
 
     # Relationships
-    problem_equations = db.relationship(
-        'ProblemEquationModel', backref='problem', lazy=True)
+    equations = db.relationship('EquationModel',
+                                secondary=problem_equation,
+                                backref=db.backref('problems', lazy=True),
+                                lazy='subquery')
 
     def __init__(self, **kwargs):
         super(ProblemModel, self).__init__(**kwargs)

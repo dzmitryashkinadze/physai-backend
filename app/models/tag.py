@@ -15,10 +15,6 @@ class TagModel(db.Model):
     time_updated = db.Column(db.DateTime(timezone=False),
                              onupdate=func.now())
 
-    # Relationships
-    course_tags = db.relationship(
-        'CourseTagModel', backref='tag', lazy=True)
-
     def __init__(self, **kwargs):
         super(TagModel, self).__init__(**kwargs)
 

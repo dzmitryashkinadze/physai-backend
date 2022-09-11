@@ -1,5 +1,6 @@
 from app.database import db
 from sqlalchemy.sql import func
+from app.models.many_to_many_tables import course_tag, course_equation
 
 
 class CourseModel(db.Model):
@@ -36,12 +37,8 @@ class CourseModel(db.Model):
         'UserProgressCourseModel', backref='course', lazy=True)
     user_actives = db.relationship(
         'UserActiveModel', backref='course', lazy=True)
-    course_tags = db.relationship(
-        'CourseTagModel', backref='course', lazy=True)
     chapters = db.relationship(
         'ChapterModel', backref='course', lazy=True)
-    course_equations = db.relationship(
-        'CourseEquationModel', backref='course', lazy=True)
     frames = db.relationship(
         'FrameModel', backref='course', lazy=True)
     concepts = db.relationship(
@@ -50,6 +47,14 @@ class CourseModel(db.Model):
         'TestModel', backref='course', lazy=True)
     problems = db.relationship(
         'ProblemModel', backref='course', lazy=True)
+    tags = db.relationship('TagModel',
+                           secondary=course_tag,
+                           backref=db.backref('courses', lazy=True),
+                           lazy='subquery')
+    equations = db.relationship('EquationModel',
+                                secondary=course_equation,
+                                backref=db.backref('courses', lazy=True),
+                                lazy='subquery')
 
     def __init__(self, **kwargs):
         super(CourseModel, self).__init__(**kwargs)
@@ -64,6 +69,8 @@ class CourseModel(db.Model):
             'logo_path': self.logo_path,
             'sequence_id': self.sequence_id,
             'visible': self.visible,
+            'tags': list(map(lambda x: x.tag, self.tags)),
+            'equations': list(map(lambda x: x.title, self.equations)),
         }
 
     def update(self, **kwargs):

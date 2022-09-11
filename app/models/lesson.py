@@ -26,6 +26,7 @@ class LessonModel(db.Model):
                              nullable=False)
     time_updated = db.Column(db.DateTime(timezone=False),
                              onupdate=func.now())
+    logo_path = db.Column(db.String(255), nullable=False)
 
     # Relationships
     user_progress_lessons = db.relationship(
@@ -47,6 +48,7 @@ class LessonModel(db.Model):
             'description': self.description,
             'sequence_id': self.sequence_id,
             'visible': self.visible,
+            'logo_path': self.logo_path,
         }
 
     def update(self, **kwargs):

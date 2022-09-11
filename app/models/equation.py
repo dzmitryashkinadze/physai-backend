@@ -21,12 +21,6 @@ class EquationModel(db.Model):
     time_updated = db.Column(db.DateTime(timezone=False),
                              onupdate=func.now())
 
-    # Relationships
-    course_equations = db.relationship(
-        'CourseEquationModel', backref='equation', lazy=True)
-    problem_equations = db.relationship(
-        'ProblemEquationModel', backref='equation', lazy=True)
-
     def __init__(self, **kwargs):
         super(EquationModel, self).__init__(**kwargs)
 
