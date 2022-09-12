@@ -44,6 +44,8 @@ from app.resources.admin.user_progress_course import AdminUserProgressCourse, Ad
 from app.resources.admin.user_progress_lesson import AdminUserProgressLesson, AdminUserProgressLessonList
 from app.resources.admin.user_rating import AdminUserRating, AdminUserRatingList
 from app.resources.admin.user import AdminUser, AdminUserList
+from app.resources.admin.image import AdminImage, AdminImageList
+
 
 
 def initialize_routes(api):
@@ -124,4 +126,6 @@ def initialize_routes(api):
     api.add_resource(AdminUserRatingList, '/api/admin/user_ratings')
     api.add_resource(AdminUser, '/api/admin/users/<string:id>')
     api.add_resource(AdminUserList, '/api/admin/users')
+    api.add_resource(AdminImage, '/api/admin/images/<string:key>')
+    api.add_resource(AdminImageList, '/api/admin/images')
     
