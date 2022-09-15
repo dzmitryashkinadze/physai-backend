@@ -4,6 +4,7 @@
 docker-compose.yml
 
 # DB backup
+db_scripts
 */db_backup
 
 # dependencies
@@ -26,6 +27,7 @@ build.*
 deploy_*.sh
 
 # misc
+venv
 *.vscode
 *.DS_Store
 *.env.local
