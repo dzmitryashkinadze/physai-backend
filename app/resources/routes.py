@@ -48,7 +48,7 @@ from app.resources.admin.user import AdminUser, AdminUserList
 from app.resources.admin.image import AdminImage, AdminImageList
 
 
-def initialize_routes(api, image_bucket):
+def initialize_routes(api, image_bucket, ses_client):
 
     #############################
     ###### USER ENDPOINTS ######
@@ -62,7 +62,8 @@ def initialize_routes(api, image_bucket):
     api.add_resource(CourseList, '/api/courses')
     api.add_resource(Course, '/api/course/<string:id>')
     api.add_resource(Lesson, '/api/lesson/<string:id>')
-    api.add_resource(Email, '/api/email')
+    api.add_resource(Email, '/api/email',
+                     resource_class_args=(ses_client,))
     #api.add_resource(Bundle, '/api/bundles/<string:id>')
     #api.add_resource(BundleList, '/api/bundles')
     # Resource: user

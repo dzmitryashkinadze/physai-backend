@@ -1,34 +1,51 @@
 from flask_restful import Resource
-from mailjet_rest import Client
-import os
 
-api_key = os.environ.get('MAILJET_API_KEY')
-api_secret = os.environ.get('MAILJET_API_SECRET')
-mailjet = Client(auth=(api_key, api_secret), version='v3.1')
+
+class SesDestination:
+    """Contains data about an email destination."""
+
+    def __init__(self, tos, ccs=None, bccs=None):
+        """
+        :param tos: The list of recipients on the 'To:' line.
+        :param ccs: The list of recipients on the 'CC:' line.
+        :param bccs: The list of recipients on the 'BCC:' line.
+        """
+        self.tos = tos
+        self.ccs = ccs
+        self.bccs = bccs
+
+    def to_service_format(self):
+        """
+        :return: The destination data in the format expected by Amazon SES.
+        """
+        svc_format = {'ToAddresses': self.tos}
+        if self.ccs is not None:
+            svc_format['CcAddresses'] = self.ccs
+        if self.bccs is not None:
+            svc_format['BccAddresses'] = self.bccs
+        return svc_format
 
 
 class Email(Resource):
+    def __init__(self, ses_client):
+        self.ses_client = ses_client
+
     def get(self):
-        data = {
-            'Messages': [
-                {
-                    "From": {
-                        "Email": "info@physai.com",
-                        "Name": "Dzmitry"
-                    },
-                    "To": [
-                        {
-                            "Email": "dzmitry.ashkinadze@gmail.com",
-                            "Name": "Dzmitry"
-                        }
-                    ],
-                    "Subject": "Greetings from Mailjet.",
-                    "TextPart": "My first Mailjet email",
-                    "HTMLPart": "<h3>Dear passenger 1, welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />May the delivery force be with you!",
-                    "CustomID": "AppGettingStartedTest"
-                }
-            ]
-        }
-        result = mailjet.send.create(data=data)
-        print(result.status_code)
-        print(result.json())
+        destination = SesDestination(tos=['dzmitry.ashkinadze@gmail.com'])
+        # sending email with all details with amzon ses
+        send_args = {
+            'Source': 'info@physai.org',
+            'Destination': destination.to_service_format(),
+            'Template': 'CONFIRM_EMAIL',
+            'TemplateData': '{ \"REPLACEMENT_TAG_NAME\":\"REPLACEMENT_VALUE\" }'}
+        try:
+            response = self.ses_client.send_templated_email(**send_args)
+            message_id = response['MessageId']
+            # logger.info(
+            #    "Sent mail %s from %s to %s.", message_id, source, destination.tos)
+        except Exception:
+            # logger.exception(
+            #    "Couldn't send mail from %s to %s.", source, destination.tos)
+            raise
+        else:
+            return message_id, 401
