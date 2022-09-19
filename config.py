@@ -11,6 +11,7 @@ class ProductionConfig(object):
     JWT_AUTH_URL_RULE = os.environ.get('JWT_AUTH_URL_RULE')
     JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
     SECRET_KEY = os.environ.get('SECRET_KEY')
+    API_KEY = os.environ.get('API_KEY')
     PORT = os.environ.get('PORT')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     PROPAGATE_EXCEPTIONS = True
@@ -25,6 +26,7 @@ class DevelopmentConfig(object):
     JWT_AUTH_URL_RULE = os.environ.get('JWT_AUTH_URL_RULE')
     JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
     SECRET_KEY = os.environ.get('SECRET_KEY')
+    API_KEY = os.environ.get('API_KEY')
     PORT = os.environ.get('PORT')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     PROPAGATE_EXCEPTIONS = True
@@ -39,6 +41,7 @@ class TestConfig(object):
     JWT_AUTH_URL_RULE = os.environ.get('JWT_AUTH_URL_RULE')
     JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
     SECRET_KEY = os.environ.get('SECRET_KEY')
+    API_KEY = os.environ.get('API_KEY')
     PORT = os.environ.get('PORT')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     PROPAGATE_EXCEPTIONS = True

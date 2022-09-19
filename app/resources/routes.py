@@ -19,6 +19,7 @@ from app.resources.user.refresh_token import UserRefreshToken
 from app.resources.user.course import CourseList
 from app.resources.user.course import Course
 from app.resources.user.lesson import Lesson
+from app.resources.user.email import Email
 
 # admin resource classes
 from app.resources.admin.login import AdminLogin
@@ -47,8 +48,7 @@ from app.resources.admin.user import AdminUser, AdminUserList
 from app.resources.admin.image import AdminImage, AdminImageList
 
 
-
-def initialize_routes(api):
+def initialize_routes(api, image_bucket):
 
     #############################
     ###### USER ENDPOINTS ######
@@ -62,6 +62,7 @@ def initialize_routes(api):
     api.add_resource(CourseList, '/api/courses')
     api.add_resource(Course, '/api/course/<string:id>')
     api.add_resource(Lesson, '/api/lesson/<string:id>')
+    api.add_resource(Email, '/api/email')
     #api.add_resource(Bundle, '/api/bundles/<string:id>')
     #api.add_resource(BundleList, '/api/bundles')
     # Resource: user
@@ -114,18 +115,24 @@ def initialize_routes(api):
     api.add_resource(AdminUserActiveList, '/api/admin/user_actives')
     api.add_resource(AdminUserDetail, '/api/admin/user_details/<string:id>')
     api.add_resource(AdminUserDetailList, '/api/admin/user_details')
-    api.add_resource(AdminUserFeedback, '/api/admin/user_feedbacks/<string:id>')
+    api.add_resource(AdminUserFeedback,
+                     '/api/admin/user_feedbacks/<string:id>')
     api.add_resource(AdminUserFeedbackList, '/api/admin/user_feedbacks')
     api.add_resource(AdminUserLogin, '/api/admin/user_logins/<string:id>')
     api.add_resource(AdminUserLoginList, '/api/admin/user_logins')
-    api.add_resource(AdminUserProgressCourse, '/api/admin/user_progress_courses/<string:id>')
-    api.add_resource(AdminUserProgressCourseList, '/api/admin/user_progress_courses')
-    api.add_resource(AdminUserProgressLesson, '/api/admin/user_progress_lessons/<string:id>')
-    api.add_resource(AdminUserProgressLessonList, '/api/admin/user_progress_lessons')
+    api.add_resource(AdminUserProgressCourse,
+                     '/api/admin/user_progress_courses/<string:id>')
+    api.add_resource(AdminUserProgressCourseList,
+                     '/api/admin/user_progress_courses')
+    api.add_resource(AdminUserProgressLesson,
+                     '/api/admin/user_progress_lessons/<string:id>')
+    api.add_resource(AdminUserProgressLessonList,
+                     '/api/admin/user_progress_lessons')
     api.add_resource(AdminUserRating, '/api/admin/user_ratings/<string:id>')
     api.add_resource(AdminUserRatingList, '/api/admin/user_ratings')
     api.add_resource(AdminUser, '/api/admin/users/<string:id>')
     api.add_resource(AdminUserList, '/api/admin/users')
-    api.add_resource(AdminImage, '/api/admin/images/<string:key>')
-    api.add_resource(AdminImageList, '/api/admin/images')
-    
+    api.add_resource(AdminImage, '/api/admin/images/<string:key>',
+                     resource_class_args=(image_bucket,))
+    api.add_resource(AdminImageList, '/api/admin/images',
+                     resource_class_args=(image_bucket,))

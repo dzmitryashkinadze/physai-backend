@@ -24,20 +24,13 @@ class AdminImage(Resource):
     parser.add_argument('base64')
     parser.add_argument('filename', type=str)
 
+    def __init__(self, image_bucket):
+        self.image_bucket = image_bucket
+
     @auth_required(3)
     def delete(user, self, key):
-
-        # Set up the connection to the client
-        s3 = boto3.Session(
-            aws_access_key_id=current_app.config['AWS_ACCESS_KEY_ID'],
-            aws_secret_access_key=current_app.config['AWS_SECRET_ACCESS_KEY']
-        ).resource('s3')
-
-        # Create the reference to the bucket
-        my_bucket = s3.Bucket('physai-images')
-
         # Find and delete the image
-        for my_bucket_object in my_bucket.objects.all():
+        for my_bucket_object in self.image_bucket.objects.all():
             if my_bucket_object.key == key:
                 try:
                     my_bucket_object.delete()
@@ -49,21 +42,14 @@ class AdminImage(Resource):
 
 # class controlling bundle resource
 class AdminImageList(Resource):
+    def __init__(self, image_bucket):
+        self.image_bucket = image_bucket
+
     @auth_required(3)
     def get(user, self):
-
-        # Set up the connection to the client
-        s3 = boto3.Session(
-            aws_access_key_id=current_app.config['AWS_ACCESS_KEY_ID'],
-            aws_secret_access_key=current_app.config['AWS_SECRET_ACCESS_KEY']
-        ).resource('s3')
-
-        # Create the reference to the bucket
-        my_bucket = s3.Bucket('physai-images')
-
         # Find and return all files in image directory
         images = []
-        for my_bucket_object in my_bucket.objects.all():
+        for my_bucket_object in self.image_bucket.objects.all():
             images.append({"id": my_bucket_object.key})
 
         response = Response(json.dumps(images))
@@ -77,18 +63,11 @@ class AdminImageList(Resource):
             'data:image/jpeg;base64,', '').strip()
         img_data = base64.b64decode(b64_string)
 
-        # Set up the connection to the client
-        s3 = boto3.Session(
-            aws_access_key_id=current_app.config['AWS_ACCESS_KEY_ID'],
-            aws_secret_access_key=current_app.config['AWS_SECRET_ACCESS_KEY']
-        ).resource('s3')
-
         # check if the file name is valid
         if allowed_file(data.filename):
             # Upload the s3 object
             try:
-                object = s3.Object('physai-images', data.filename)
-                object.put(Body=img_data)
+                self.image_bucket.put_object(Body=img_data, Key=data.filename)
                 return {'message': 'image uploaded'}, 200
             except Exception:
                 return {'message': 'error while uploading'}, 400
