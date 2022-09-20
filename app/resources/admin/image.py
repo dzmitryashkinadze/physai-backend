@@ -60,7 +60,11 @@ class AdminImageList(Resource):
     def post(user, self):
         data = AdminImage.parser.parse_args()
         b64_string = data['base64'].replace(
-            'data:image/jpeg;base64,', '').strip()
+            'data:image/jpeg;base64,', '').replace(
+            'data:image/png;base64,', '').replace(
+            'data:image/svg+xml;base64,', '').replace(
+            'data:image/svg;base64,', '').replace(
+            'data:image/xml;base64,', '').strip()
         img_data = base64.b64decode(b64_string)
 
         # check if the file name is valid
