@@ -41,7 +41,8 @@ class AdminFrame(Resource):
 class AdminFrameList(Resource):
     @auth_required(3)
     def get(user, self):
-        data = list(map(lambda x: x.json(), FrameModel.query.all()))
+        data = list(map(lambda x: x.json(), FrameModel.query.order_by(
+            FrameModel.sequence_id).all()))
         response = Response(json.dumps(data))
         response.headers['Content-Range'] = len(data)
         return response

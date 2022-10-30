@@ -79,7 +79,7 @@ class AdminCourse(Resource):
 class AdminCourseList(Resource):
     @auth_required(3)
     def get(user, self):
-        data = list(map(lambda x: x.json(), CourseModel.query.all()))
+        data = list(map(lambda x: x.json(), CourseModel.query.order_by(CourseModel.sequence_id).all()))
         response = Response(json.dumps(data))
         response.headers['Content-Range'] = len(data)
         return response

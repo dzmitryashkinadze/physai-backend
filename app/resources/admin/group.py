@@ -42,7 +42,7 @@ class AdminGroup(Resource):
 class AdminGroupList(Resource):
     @auth_required(3)
     def get(user, self):
-        data = list(map(lambda x: x.json(), GroupModel.query.all()))
+        data = list(map(lambda x: x.json(), GroupModel.query.order_by(GroupModel.sequence_id).all()))
         response = Response(json.dumps(data))
         response.headers['Content-Range'] = len(data)
         return response

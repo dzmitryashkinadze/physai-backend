@@ -42,7 +42,8 @@ class AdminChapter(Resource):
 class AdminChapterList(Resource):
     @auth_required(3)
     def get(user, self):
-        data = list(map(lambda x: x.json(), ChapterModel.query.all()))
+        data = list(map(lambda x: x.json(), ChapterModel.query.order_by(
+            ChapterModel.sequence_id).all()))
         response = Response(json.dumps(data))
         response.headers['Content-Range'] = len(data)
         return response

@@ -58,27 +58,13 @@ def initialize_routes(api, image_bucket, ses_client):
     api.add_resource(UserLogin, '/api/login')
     api.add_resource(UserValidate, '/api/validate')
     api.add_resource(UserRefreshToken, '/api/refresh_token')
-    # Resource: group
-    api.add_resource(CourseList, '/api/courses')
-    api.add_resource(Course, '/api/course/<string:id>')
-    api.add_resource(Lesson, '/api/lesson/<string:id>')
+    # Utillity endpoints
     api.add_resource(Email, '/api/email',
                      resource_class_args=(ses_client,))
-    #api.add_resource(Bundle, '/api/bundles/<string:id>')
-    #api.add_resource(BundleList, '/api/bundles')
-    # Resource: user
-    #api.add_resource(User, '/api/users/<string:id>')
-    # Resource: problem
-    #api.add_resource(Problem, '/api/problem/<string:id>')
-    #api.add_resource(ProblemList, '/api/problems/<string:bundle_id>')
-    # Resource: skill
-    #api.add_resource(Skill, '/api/skill/<string:id>')
-    #api.add_resource(SkillList, '/api/skills')
-    # Resource: problem_skill (relationship)
-    #api.add_resource(ProblemSkillList, '/api/problem_skills/<string:problem_id>')
-    # Resource: user_progress (relationship)
-    #api.add_resource(UserProgress, '/api/user_progress/<string:id>')
-    #api.add_resource(UserProgressList, '/api/user_progress_all')
+    # Frontend pages
+    api.add_resource(CourseList, '/api/page_courses')
+    api.add_resource(Course, '/api/page_course/<string:id>')
+    api.add_resource(Lesson, '/api/page_lesson/<string:id>')
 
     #############################
     ###### ADMIN ENDPOINTS ######
