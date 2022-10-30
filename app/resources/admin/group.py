@@ -21,9 +21,11 @@ class AdminGroup(Resource):
     @auth_required(3)
     def put(user, self, id):
         data = AdminGroup.parser.parse_args()
-        print(data)
         raw = GroupModel.find_by_id(int(id))
         if raw:
+            if data["sequence_id"] is None:
+                data["sequence_id"] = raw.sequence_id
+            print(data)
             raw.update(**data)
         else:
             {'message': 'raw not found'}, 404
@@ -42,7 +44,8 @@ class AdminGroup(Resource):
 class AdminGroupList(Resource):
     @auth_required(3)
     def get(user, self):
-        data = list(map(lambda x: x.json(), GroupModel.query.order_by(GroupModel.sequence_id).all()))
+        data = list(map(lambda x: x.json(), GroupModel.query.order_by(
+            GroupModel.sequence_id).all()))
         response = Response(json.dumps(data))
         response.headers['Content-Range'] = len(data)
         return response
@@ -51,6 +54,11 @@ class AdminGroupList(Resource):
     def post(user, self):
         data = AdminGroup.parser.parse_args()
         try:
+            if data["sequence_id"] is None:
+                # check highest sequence_id and set this one highest + 1
+                test = list(map(lambda x: x.json(), GroupModel.query.order_by(
+                    GroupModel.sequence_id).all()))
+                data["sequence_id"] = test[-1]["sequence_id"] + 1
             raw = GroupModel(**data)
             raw.save_to_db()
         except Exception:
