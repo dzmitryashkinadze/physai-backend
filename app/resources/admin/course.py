@@ -79,7 +79,8 @@ class AdminCourse(Resource):
 class AdminCourseList(Resource):
     @auth_required(3)
     def get(user, self):
-        data = list(map(lambda x: x.json(), CourseModel.query.order_by(CourseModel.sequence_id).all()))
+        data = list(map(lambda x: x.json(), CourseModel.query.order_by(
+            CourseModel.sequence_id).all()))
         response = Response(json.dumps(data))
         response.headers['Content-Range'] = len(data)
         return response
@@ -91,6 +92,11 @@ class AdminCourseList(Resource):
         ) if k in AdminCourse.native_features}
         print(data)
         try:
+            if data["sequence_id"] is None:
+                # check highest sequence_id and set this one highest + 1
+                test = list(map(lambda x: x.json(), CourseModel.query.order_by(
+                    CourseModel.sequence_id).all()))
+                data["sequence_id"] = test[-1]["sequence_id"] + 1
             raw = CourseModel(**data)
             raw.save_to_db()
         except Exception:

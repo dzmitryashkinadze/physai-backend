@@ -52,6 +52,11 @@ class AdminChapterList(Resource):
     def post(user, self):
         data = AdminChapter.parser.parse_args()
         try:
+            if data["sequence_id"] is None:
+                # check highest sequence_id and set this one highest + 1
+                test = list(map(lambda x: x.json(), ChapterModel.query.order_by(
+                    ChapterModel.sequence_id).all()))
+                data["sequence_id"] = test[-1]["sequence_id"] + 1
             raw = ChapterModel(**data)
             raw.save_to_db()
         except Exception:

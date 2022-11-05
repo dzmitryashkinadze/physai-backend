@@ -54,6 +54,11 @@ class AdminLessonList(Resource):
     def post(user, self):
         data = AdminLesson.parser.parse_args()
         try:
+            if data["sequence_id"] is None:
+                # check highest sequence_id and set this one highest + 1
+                test = list(map(lambda x: x.json(), LessonModel.query.order_by(
+                    LessonModel.sequence_id).all()))
+                data["sequence_id"] = test[-1]["sequence_id"] + 1
             raw = LessonModel(**data)
             raw.save_to_db()
         except Exception:
