@@ -8,21 +8,20 @@ import base64
 from flask import current_app
 from codecs import encode
 
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
 
 
 # check the validity of the file extension
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 # class controlling bundle resource
 class AdminImage(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument('key')
-    parser.add_argument('base64')
-    parser.add_argument('filename', type=str)
+    parser.add_argument("key")
+    parser.add_argument("base64")
+    parser.add_argument("filename", type=str)
 
     def __init__(self, image_bucket):
         self.image_bucket = image_bucket
@@ -34,10 +33,10 @@ class AdminImage(Resource):
             if my_bucket_object.key == key:
                 try:
                     my_bucket_object.delete()
-                    return {'message': 'image deleted'}, 200
+                    return {"message": "image deleted"}, 200
                 except Exception:
-                    return {'message': 'error while deleting'}, 400
-        return {'message': 'image not found'}, 400
+                    return {"message": "error while deleting"}, 400
+        return {"message": "image not found"}, 400
 
 
 # class controlling bundle resource
@@ -53,18 +52,21 @@ class AdminImageList(Resource):
             images.append({"id": my_bucket_object.key})
 
         response = Response(json.dumps(images))
-        response.headers['Content-Range'] = len(images)
+        response.headers["Content-Range"] = len(images)
         return response
 
     @auth_required(3)
     def post(user, self):
         data = AdminImage.parser.parse_args()
-        b64_string = data['base64'].replace(
-            'data:image/jpeg;base64,', '').replace(
-            'data:image/png;base64,', '').replace(
-            'data:image/svg+xml;base64,', '').replace(
-            'data:image/svg;base64,', '').replace(
-            'data:image/xml;base64,', '').strip()
+        b64_string = (
+            data["base64"]
+            .replace("data:image/jpeg;base64,", "")
+            .replace("data:image/png;base64,", "")
+            .replace("data:image/svg+xml;base64,", "")
+            .replace("data:image/svg;base64,", "")
+            .replace("data:image/xml;base64,", "")
+            .strip()
+        )
         img_data = base64.b64decode(b64_string)
 
         # check if the file name is valid
@@ -72,9 +74,9 @@ class AdminImageList(Resource):
             # Upload the s3 object
             try:
                 self.image_bucket.put_object(Body=img_data, Key=data.filename)
-                return {'message': 'image uploaded'}, 200
+                return {"message": "image uploaded"}, 200
             except Exception:
-                return {'message': 'error while uploading'}, 400
+                return {"message": "error while uploading"}, 400
 
         else:
-            return {'message': 'file name is not valid'}, 400
+            return {"message": "file name is not valid"}, 400

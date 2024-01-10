@@ -1,6 +1,5 @@
 from app.database import db
 from sqlalchemy.sql import func
-from app.models.many_to_many_tables import course_tag, course_equation
 
 
 class CourseModel(db.Model):
