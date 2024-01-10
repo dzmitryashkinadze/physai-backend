@@ -18,9 +18,6 @@ class UserLogin(Resource):
     parser.add_argument(
         "password", type=str, required=True, help="This field cannot be blank."
     )
-    parser.add_argument(
-        "keep_in_system", type=bool, required=True, help="This field cannot be blank."
-    )
 
     def post(self):
         data = UserLogin.parser.parse_args()
@@ -33,10 +30,7 @@ class UserLogin(Resource):
             "role": user.role,
             "email": data["email"],
         }
-        if data["keep_in_system"]:
-            refresh_validity_days = 7
-        else:
-            refresh_validity_days = 1
+        refresh_validity_days = 7
         refresh_payload = {
             "exp": datetime.datetime.utcnow()
             + datetime.timedelta(days=refresh_validity_days, minutes=0),

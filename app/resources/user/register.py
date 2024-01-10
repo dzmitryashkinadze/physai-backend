@@ -21,28 +21,25 @@ class UserRegister(Resource):
 
     def post(self):
         data = UserRegister.parser.parse_args()
-
-        print(data)
-
         validity = True
         status = 0
         regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
         if not re.fullmatch(regex, data["email"]):
             validity = False
-            message = "Неверный формат электронной почты"
+            message = "Wrong email format"
             status = 1
         if UserModel.find_by_email(data["email"]):
             validity = False
-            message = "Учетная запись с этой электронной почтой уже существуют"
+            message = "Account with this email already exists"
             status = 2
         if len(data["password"]) < 6:
             validity = False
-            message = "Пароль должен быть не короче 6 знаков"
+            message = "Password must be at least 6 characters long"
             status = 3
         if validity:
             user = UserModel(
                 email=data["email"], password_hash=sha256_crypt.hash(data["password"])
             )
             user.save_to_db()
-            message = "Учетная запись успешна зарегистрирована"
+            message = "Account created successfully"
         return {"message": message, "status": status}
