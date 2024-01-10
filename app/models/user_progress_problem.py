@@ -3,7 +3,7 @@ from sqlalchemy.sql import func
 
 
 class UserProgressProblemModel(db.Model):
-    __tablename__ = "user_progress_lesson"
+    __tablename__ = "user_progress_problem"
 
     # atributes
     id = db.Column(db.Integer, primary_key=True)

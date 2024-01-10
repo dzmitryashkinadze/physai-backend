@@ -10,35 +10,14 @@ class UserModel(db.Model):
     email = db.Column(db.String(180))
     password_hash = db.Column(db.String(180))
     role = db.Column(db.Integer, default=1)
-    time_created = db.Column(db.DateTime(timezone=False),
-                             server_default=func.now())
-    time_updated = db.Column(db.DateTime(timezone=False),
-                             onupdate=func.now())
-
-    # Relationships
-    user_logins = db.relationship('UserLoginModel', backref='user', lazy=True)
-    user_details = db.relationship(
-        'UserDetailModel', backref='user', lazy=True)
-    user_ratings = db.relationship(
-        'UserRatingModel', backref='user', lazy=True)
-    user_progress_lessons = db.relationship(
-        'UserProgressLessonModel', backref='user', lazy=True)
-    user_progress_courses = db.relationship(
-        'UserProgressCourseModel', backref='user', lazy=True)
-    user_active = db.relationship(
-        'UserActiveModel', backref='user', lazy=True, uselist=False)
-    user_feedbacks = db.relationship(
-        'UserFeedbackModel', backref='user', lazy=True)
+    time_created = db.Column(db.DateTime(timezone=False), server_default=func.now())
+    time_updated = db.Column(db.DateTime(timezone=False), onupdate=func.now())
 
     def __init__(self, **kwargs):
         super(UserModel, self).__init__(**kwargs)
 
     def json(self):
-        return {
-            'id': self.id,
-            'email': self.email,
-            'role': self.role
-        }
+        return {"id": self.id, "email": self.email, "role": self.role}
 
     def update(self, **kwargs):
         for key in kwargs.keys():

@@ -17,14 +17,6 @@ class ProblemModel(db.Model):
     )
     time_updated = db.Column(db.DateTime(timezone=False), onupdate=func.now())
 
-    # Relationships
-    equations = db.relationship(
-        "EquationModel",
-        secondary="problem_equation",
-        backref=db.backref("problems", lazy=True),
-        lazy="subquery",
-    )
-
     def __init__(self, **kwargs):
         super(ProblemModel, self).__init__(**kwargs)
 
