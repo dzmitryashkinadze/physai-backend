@@ -20,15 +20,11 @@ from app.resources.admin.user_progress_course import (
     AdminUserProgressCourse,
     AdminUserProgressCourseList,
 )
-from app.resources.admin.user_progress_problem import (
-    AdminUserProgressLesson,
-    AdminUserProgressLessonList,
-)
 from app.resources.admin.user import AdminUser, AdminUserList
 from app.resources.admin.image import AdminImage, AdminImageList
 
 
-def initialize_routes(api, image_bucket, ses_client):
+def initialize_routes(api):  # image_bucket, ses_client):
     #############################
     ###### USER ENDPOINTS ######
     #############################
@@ -59,14 +55,13 @@ def initialize_routes(api, image_bucket, ses_client):
         AdminUserProgressCourse, "/api/admin/user_progress_courses/<string:id>"
     )
     api.add_resource(AdminUserProgressCourseList, "/api/admin/user_progress_courses")
-    api.add_resource(AdminUserProgressLessonList, "/api/admin/user_progress_lessons")
     api.add_resource(AdminUser, "/api/admin/users/<string:id>")
     api.add_resource(AdminUserList, "/api/admin/users")
-    api.add_resource(
-        AdminImage,
-        "/api/admin/images/<string:key>",
-        resource_class_args=(image_bucket,),
-    )
-    api.add_resource(
-        AdminImageList, "/api/admin/images", resource_class_args=(image_bucket,)
-    )
+    # api.add_resource(
+    #     AdminImage,
+    #     "/api/admin/images/<string:key>",
+    #     resource_class_args=(image_bucket,),
+    # )
+    # api.add_resource(
+    #     AdminImageList, "/api/admin/images", resource_class_args=(image_bucket,)
+    # )

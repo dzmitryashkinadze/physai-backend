@@ -38,7 +38,7 @@ class AdminUserProgressProblem(Resource):
         return {"message": "raw not found."}, 404
 
 
-class AdminUserProgressLessonList(Resource):
+class AdminUserProgressProblemList(Resource):
     @auth_required(3)
     def get(user, self):
         data = list(map(lambda x: x.json(), UserProgressProblemModel.query.all()))
