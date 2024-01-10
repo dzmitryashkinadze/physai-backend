@@ -39,10 +39,6 @@ def create_app(config_class):
     db.init_app(app)
     migrate.init_app(app, db)
 
-    # @app.before_first_request
-    # def initialize_database():
-    #    db.create_all()
-
     # init CORS
     CORS(
         app,
