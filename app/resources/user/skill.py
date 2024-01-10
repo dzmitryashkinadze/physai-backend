@@ -1,6 +1,6 @@
 from flask_restful import Resource, reqparse
 from flask import Response, json
-from app.models.skill import SkillModel
+from app.models.equation import EquationModel
 from app.decorators import auth_required
 
 
@@ -8,7 +8,7 @@ from app.decorators import auth_required
 class Skill(Resource):
     @auth_required(1)
     def get(user, self, id):
-        skill = SkillModel.find_by_id(int(id))
+        skill = EquationModel.find_by_id(int(id))
         if skill:
             return skill.json()
         return {"message": "Skill not found"}, 404
@@ -17,5 +17,5 @@ class Skill(Resource):
 # class controlling skills resource
 class SkillList(Resource):
     def get(self):
-        skills = list(map(lambda x: x.summary(), SkillModel.query.all()))
+        skills = list(map(lambda x: x.summary(), EquationModel.query.all()))
         return {"skills": skills, "n_skills": len(skills)}

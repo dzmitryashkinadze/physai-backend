@@ -37,21 +37,7 @@ class Course(Resource):
 
 class CourseList(Resource):
     def get(self):
-        groups = list(
-            map(
-                lambda x: x.json(),
-                GroupModel.query.order_by(GroupModel.sequence_id).all(),
-            )
-        )
-        for group in groups:
-            groupModel = GroupModel.find_by_id(group["id"])
-            group_courses = groupModel.courses
-            group_courses.sort(key=lambda x: x.sequence_id)
-            group["course_count"] = len(group_courses)
-            courses_container = []
-            for course in group_courses:
-                courses_container.append(course.json())
-            group["courses"] = courses_container
-        response = Response(json.dumps(groups))
-        response.headers["Content-Range"] = len(groups)
+        courses = list(map(lambda x: x.json(), CourseModel.query.all()))
+        response = Response(json.dumps(courses))
+        response.headers["Content-Range"] = len(courses)
         return response
