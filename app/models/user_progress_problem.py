@@ -2,27 +2,21 @@ from app.database import db
 from sqlalchemy.sql import func
 
 
-class TagModel(db.Model):
-    __tablename__ = "tag"
+class UserProgressProblemModel(db.Model):
+    __tablename__ = "user_progress_lesson"
 
     # atributes
     id = db.Column(db.Integer, primary_key=True)
-    tag = db.Column(db.String(255),
-                    nullable=False)
-    time_created = db.Column(db.DateTime(timezone=False),
-                             server_default=func.now(),
-                             nullable=False)
-    time_updated = db.Column(db.DateTime(timezone=False),
-                             onupdate=func.now())
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    problem_id = db.Column(db.Integer)
+    time_created = db.Column(db.DateTime(timezone=False), server_default=func.now())
+    time_updated = db.Column(db.DateTime(timezone=False), onupdate=func.now())
 
     def __init__(self, **kwargs):
-        super(TagModel, self).__init__(**kwargs)
+        super(UserProgressProblemModel, self).__init__(**kwargs)
 
     def json(self):
-        return {
-            'id': self.id,
-            'tag': self.tag
-        }
+        return {"id": self.id, "user_id": self.user_id, "problem_id": self.lesson_id}
 
     def update(self, **kwargs):
         for key in kwargs.keys():
