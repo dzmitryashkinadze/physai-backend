@@ -16,6 +16,7 @@ class UserValidate(Resource):
         """Validate a user and return a message and a status code"""
 
         auth_header = request.headers.get("Authorization")
+
         if auth_header:
             # Parses out the "Bearer" portion
             token = auth_header.split(" ")[1]
@@ -30,7 +31,7 @@ class UserValidate(Resource):
                 return {"message": "token expired", "auth": 0}, 401
             except jwt.InvalidTokenError:
                 return {"message": "token invalid", "auth": 0}, 401
-            if not isinstance(decoded, str):
+            if isinstance(decoded, dict):
                 user = UserModel.find_by_email(decoded["email"])
                 if not user:
                     return {"message": "token invalid", "auth": 0}, 401
