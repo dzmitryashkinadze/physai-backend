@@ -11,6 +11,11 @@ from app.decorators import auth_required
 
 
 class AdminLogin(Resource):
+    """
+    This resource is used to login admins.
+    """
+
+    # Create a parser for the incoming request
     parser = reqparse.RequestParser()
     parser.add_argument(
         "email", type=str, required=True, help="This field cannot be blank."
@@ -20,6 +25,8 @@ class AdminLogin(Resource):
     )
 
     def post(self):
+        """Login a user"""
+
         data = AdminLogin.parser.parse_args()
         user = UserModel.find_by_email(data["email"])
         if not (user and sha256_crypt.verify(data["password"], user.password_hash)):

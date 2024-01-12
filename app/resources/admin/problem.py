@@ -5,6 +5,11 @@ from app.decorators import auth_required
 
 
 class AdminProblem(Resource):
+    """
+    This resource is used to get, update and delete admin problem.
+    """
+
+    # Create a parser for the incoming request
     parser = reqparse.RequestParser()
     parser.add_argument("description", type=str)
     parser.add_argument("explanation", type=str)
@@ -14,6 +19,8 @@ class AdminProblem(Resource):
 
     @auth_required(3)
     def get(user, self, id):
+        """Get a problem by id"""
+
         raw = ProblemModel.find_by_id(int(id))
         if raw:
             return raw.json()
@@ -21,6 +28,8 @@ class AdminProblem(Resource):
 
     @auth_required(3)
     def put(user, self, id):
+        """Update a problem by id"""
+
         data = AdminProblem.parser.parse_args()
         raw = ProblemModel.find_by_id(int(id))
         if raw:
@@ -32,6 +41,8 @@ class AdminProblem(Resource):
 
     @auth_required(3)
     def delete(user, self, id):
+        """Delete a problem by id"""
+
         raw = ProblemModel.find_by_id(int(id))
         if raw:
             raw.delete_from_db()
@@ -42,6 +53,8 @@ class AdminProblem(Resource):
 class AdminProblemList(Resource):
     @auth_required(3)
     def get(user, self):
+        """Get all problems"""
+
         data = list(map(lambda x: x.json(), ProblemModel.query.all()))
         response = Response(json.dumps(data))
         response.headers["Content-Range"] = len(data)
@@ -49,6 +62,8 @@ class AdminProblemList(Resource):
 
     @auth_required(3)
     def post(user, self):
+        """Create a problem"""
+
         data = AdminProblem.parser.parse_args()
         try:
             raw = ProblemModel(**data)

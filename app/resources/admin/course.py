@@ -6,6 +6,11 @@ from app.decorators import auth_required
 
 
 class AdminCourse(Resource):
+    """
+    This resource is used to get, update and delete courses.
+    """
+
+    # Create a parser for the incoming request
     parser = reqparse.RequestParser()
     parser.add_argument("title", type=str)
     parser.add_argument("summary", type=str)
@@ -14,6 +19,7 @@ class AdminCourse(Resource):
     parser.add_argument("group_id", type=int)
     parser.add_argument("sequence_id", type=int)
 
+    # native features
     native_features = [
         "title",
         "summary",
@@ -26,6 +32,8 @@ class AdminCourse(Resource):
 
     @auth_required(3)
     def get(user, self, id):
+        """Get a course by id"""
+
         raw = CourseModel.find_by_id(int(id))
         if raw:
             return raw.json()
@@ -33,6 +41,8 @@ class AdminCourse(Resource):
 
     @auth_required(3)
     def put(user, self, id):
+        """Update a course by id"""
+
         data = AdminCourse.parser.parse_args()
         print(data)
         data_native = {
@@ -49,6 +59,8 @@ class AdminCourse(Resource):
 
     @auth_required(3)
     def delete(user, self, id):
+        """Delete a course by id"""
+
         raw = CourseModel.find_by_id(int(id))
         if raw:
             raw.delete_from_db()
@@ -57,8 +69,14 @@ class AdminCourse(Resource):
 
 
 class AdminCourseList(Resource):
+    """
+    This resource is used to get, update and delete courses.
+    """
+
     @auth_required(3)
     def get(user, self):
+        """Get all courses"""
+
         data = list(
             map(
                 lambda x: x.json(),
@@ -71,6 +89,8 @@ class AdminCourseList(Resource):
 
     @auth_required(3)
     def post(user, self):
+        """Create a course"""
+
         data = AdminCourse.parser.parse_args()
         data = {k: v for k, v in data.items() if k in AdminCourse.native_features}
         print(data)

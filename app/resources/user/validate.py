@@ -1,17 +1,20 @@
-from flask_restful import Resource, reqparse
+from flask_restful import Resource
 from app.models.user import UserModel
-from flask import jsonify, request
-from flask import Response, json
+from flask import request
 import jwt
-import re
-import datetime
-from passlib.hash import sha256_crypt
 from flask import current_app
-from app.decorators import auth_required
 
 
 class UserValidate(Resource):
+    """
+    This resource is used to validate users.
+    Users must provide their JWT access token.
+    It returns a message and a status code.
+    """
+
     def get(self):
+        """Validate a user and return a message and a status code"""
+
         auth_header = request.headers.get("Authorization")
         if auth_header:
             # Parses out the "Bearer" portion

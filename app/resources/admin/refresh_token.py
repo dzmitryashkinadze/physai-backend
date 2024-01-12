@@ -11,12 +11,18 @@ from app.decorators import auth_required
 
 
 class AdminRefreshToken(Resource):
+    """
+    This resource is used to refresh a token
+    """
+
+    # Create a parser for the incoming request
     parser = reqparse.RequestParser()
     parser.add_argument(
         "refreshToken", type=str, required=True, help="This field cannot be blank."
     )
 
     def post(self):
+        """Refresh a token"""
         data = AdminRefreshToken.parser.parse_args()
         if data["refreshToken"]:
             token = data["refreshToken"]

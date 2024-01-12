@@ -11,7 +11,13 @@ from app.decorators import auth_required
 
 
 class AdminValidate(Resource):
+    """
+    This resource is used to validate admins.
+    """
+
     def get(self):
+        """Validate an admin user"""
+
         auth_header = request.headers.get("Authorization")
         if auth_header:
             # Parses out the "Bearer" portion

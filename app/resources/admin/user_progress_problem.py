@@ -5,6 +5,11 @@ from app.decorators import auth_required
 
 
 class AdminUserProgressProblem(Resource):
+    """
+    This resource is used to get, update and delete admin progress.
+    """
+
+    # Create a parser for the incoming request
     parser = reqparse.RequestParser()
     parser.add_argument("user_id", type=int)
     parser.add_argument("lesson_id", type=int)
@@ -13,6 +18,8 @@ class AdminUserProgressProblem(Resource):
 
     @auth_required(3)
     def get(user, self, id):
+        """Get a progress by id"""
+
         raw = UserProgressProblemModel.find_by_id(int(id))
         if raw:
             return raw.json()
@@ -20,6 +27,8 @@ class AdminUserProgressProblem(Resource):
 
     @auth_required(3)
     def put(user, self, id):
+        """Update a progress by id"""
+
         data = AdminUserProgressProblem.parser.parse_args()
         raw = UserProgressProblemModel.find_by_id(int(id))
         if raw:

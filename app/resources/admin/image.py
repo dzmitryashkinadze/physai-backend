@@ -16,8 +16,12 @@ def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-# class controlling bundle resource
 class AdminImage(Resource):
+    """
+    This resource is used to get a list of images.
+    """
+
+    # Create a parser for the incoming request
     parser = reqparse.RequestParser()
     parser.add_argument("key")
     parser.add_argument("base64")
@@ -28,6 +32,8 @@ class AdminImage(Resource):
 
     @auth_required(3)
     def delete(user, self, key):
+        """Delete a image by id"""
+
         # Find and delete the image
         for my_bucket_object in self.image_bucket.objects.all():
             if my_bucket_object.key == key:
@@ -41,11 +47,17 @@ class AdminImage(Resource):
 
 # class controlling bundle resource
 class AdminImageList(Resource):
+    """
+    This resource is used to get a list of images.
+    """
+
     def __init__(self, image_bucket):
         self.image_bucket = image_bucket
 
     @auth_required(3)
     def get(user, self):
+        """Get a list of images"""
+
         # Find and return all files in image directory
         images = []
         for my_bucket_object in self.image_bucket.objects.all():
@@ -57,6 +69,8 @@ class AdminImageList(Resource):
 
     @auth_required(3)
     def post(user, self):
+        """Create a image"""
+
         data = AdminImage.parser.parse_args()
         b64_string = (
             data["base64"]

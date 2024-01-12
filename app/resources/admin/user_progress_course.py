@@ -5,6 +5,11 @@ from app.decorators import auth_required
 
 
 class AdminUserProgressCourse(Resource):
+    """
+    This resource is used to get, update and delete admin progress.
+    """
+
+    # Create a parser for the incoming request
     parser = reqparse.RequestParser()
     parser.add_argument("user_id", type=int)
     parser.add_argument("course_id", type=int)
@@ -13,6 +18,7 @@ class AdminUserProgressCourse(Resource):
 
     @auth_required(3)
     def get(user, self, id):
+        """Get a progress by id"""
         raw = UserProgressCourseModel.find_by_id(int(id))
         if raw:
             return raw.json()
@@ -20,6 +26,7 @@ class AdminUserProgressCourse(Resource):
 
     @auth_required(3)
     def put(user, self, id):
+        """Update a progress by id"""
         data = AdminUserProgressCourse.parser.parse_args()
         raw = UserProgressCourseModel.find_by_id(int(id))
         if raw:
@@ -31,6 +38,8 @@ class AdminUserProgressCourse(Resource):
 
     @auth_required(3)
     def delete(user, self, id):
+        """Delete a progress by id"""
+
         raw = UserProgressCourseModel.find_by_id(int(id))
         if raw:
             raw.delete_from_db()
@@ -41,6 +50,8 @@ class AdminUserProgressCourse(Resource):
 class AdminUserProgressCourseList(Resource):
     @auth_required(3)
     def get(user, self):
+        """Get all progress"""
+
         data = list(map(lambda x: x.json(), UserProgressCourseModel.query.all()))
         response = Response(json.dumps(data))
         response.headers["Content-Range"] = len(data)
@@ -48,6 +59,8 @@ class AdminUserProgressCourseList(Resource):
 
     @auth_required(3)
     def post(user, self):
+        """Create a progress"""
+
         data = AdminUserProgressCourse.parser.parse_args()
         try:
             raw = UserProgressCourseModel(**data)

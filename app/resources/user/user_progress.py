@@ -6,14 +6,20 @@ from app.models.user_progress_problem import UserProgressProblemModel
 from flask import request
 
 
-# class controlling skills resource
 class UserProgress(Resource):
+    """
+    This resource is used to get and update user progress
+    """
+
+    # Create a parser for the incoming request
     parser = reqparse.RequestParser()
     parser.add_argument("progress")
 
     # get user progress
     @auth_required(1)
     def get(user, self, id):
+        """Get user progress"""
+
         try:
             progress_model = UserProgressCourseModel.find_progress(user.id, id)
             progress = progress_model.progress
@@ -28,6 +34,8 @@ class UserProgress(Resource):
     # update user progress
     @auth_required(1)
     def put(user, self, id):
+        """Update user progress"""
+
         data = UserProgress.parser.parse_args()
         progress_model = UserProgressCourseModel.find_progress(user.id, id)
         if progress_model:
@@ -46,8 +54,14 @@ class UserProgress(Resource):
 
 
 class UserProgressList(Resource):
+    """
+    This resource is used to get all user progress
+    """
+
     @auth_required(1)
     def get(user, self):
+        """Get all user progress"""
+
         progress_list = list(
             map(
                 lambda x: x.json(),

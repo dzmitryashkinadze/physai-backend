@@ -5,13 +5,20 @@ from app.decorators import auth_required
 
 
 # class controlling skills resource
-class ProblemSkillList(Resource):
+class ProblemEquationList(Resource):
+    """
+    This resource is used to get a list of equations for a problem.
+    """
+
+    # Create a parser for the incoming request
     parser = reqparse.RequestParser()
     parser.add_argument("skill_id")
 
     # get skills
     @auth_required(1)
     def get(user, self, problem_id):
+        """Get all equaitons for a problem"""
+
         skill_list = list(
             map(lambda x: int(x.skill_id), ProblemEquationModel.find_skills(problem_id))
         )

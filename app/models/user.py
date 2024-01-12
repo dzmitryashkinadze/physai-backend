@@ -3,6 +3,10 @@ from sqlalchemy.sql import func
 
 
 class UserModel(db.Model):
+    """
+    This DB model represents a user
+    """
+
     __tablename__ = "user"
 
     # atributes
@@ -17,24 +21,30 @@ class UserModel(db.Model):
         super(UserModel, self).__init__(**kwargs)
 
     def json(self):
+        """Return a JSON representation of the user"""
         return {"id": self.id, "email": self.email, "role": self.role}
 
     def update(self, **kwargs):
+        """Update the user"""
         for key in kwargs.keys():
             setattr(self, key, kwargs[key])
 
     def save_to_db(self):
+        """Save the user to the database"""
         db.session.add(self)
         db.session.commit()
 
     @classmethod
     def find_by_email(cls, email):
+        """Find a user by email"""
         return cls.query.filter_by(email=email).first()
 
     @classmethod
     def find_by_id(cls, _id):
+        """Find a user by id"""
         return cls.query.filter_by(id=_id).first()
 
     def delete_from_db(self):
+        """Delete the user from the database"""
         db.session.delete(self)
         db.session.commit()

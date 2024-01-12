@@ -11,6 +11,11 @@ from app.models.user import UserModel
 
 
 class UserRegister(Resource):
+    """
+    This resource is used to register a user
+    """
+
+    # Create a parser for the incoming request
     parser = reqparse.RequestParser()
     parser.add_argument(
         "email", type=str, required=True, help="This field cannot be blank."
@@ -20,6 +25,8 @@ class UserRegister(Resource):
     )
 
     def post(self):
+        """Register a user"""
+
         data = UserRegister.parser.parse_args()
         validity = True
         status = 0
