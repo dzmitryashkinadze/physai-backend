@@ -3,6 +3,10 @@ from sqlalchemy.sql import func
 
 
 class UserProgressProblemModel(db.Model):
+    """
+    This DB model represents a user's progress on a problem.
+    """
+
     __tablename__ = "user_progress_problem"
 
     # atributes
@@ -16,20 +20,25 @@ class UserProgressProblemModel(db.Model):
         super(UserProgressProblemModel, self).__init__(**kwargs)
 
     def json(self):
+        """Return a JSON representation of a user's progress on a problem."""
         return {"id": self.id, "user_id": self.user_id, "problem_id": self.lesson_id}
 
     def update(self, **kwargs):
+        """Update a user's progress on a problem."""
         for key in kwargs.keys():
             setattr(self, key, kwargs[key])
 
     def save_to_db(self):
+        """Save a user's progress on a problem to the database."""
         db.session.add(self)
         db.session.commit()
 
     @classmethod
     def find_by_id(cls, _id):
+        """Find a user's progress on a problem by ID."""
         return cls.query.filter_by(id=_id).first()
 
     def delete_from_db(self):
+        """Delete a user's progress on a problem from the database."""
         db.session.delete(self)
         db.session.commit()

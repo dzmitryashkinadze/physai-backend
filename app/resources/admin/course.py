@@ -1,6 +1,5 @@
 from flask_restful import Resource, reqparse
 from app.models.course import CourseModel
-from app.models.equation import EquationModel
 from flask import Response, json
 from app.decorators import auth_required
 

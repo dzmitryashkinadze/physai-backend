@@ -1,9 +1,7 @@
 from flask_restful import Resource, reqparse
-from flask import Response, json
 from app.decorators import auth_required
 from app.models.user_progress_course import UserProgressCourseModel
 from app.models.user_progress_problem import UserProgressProblemModel
-from flask import request
 
 
 class UserProgress(Resource):

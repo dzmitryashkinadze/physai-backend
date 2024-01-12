@@ -1,12 +1,6 @@
 from flask_restful import Resource, reqparse
-from flask import jsonify, request
-from flask import Response, json
-import jwt
 import re
-import datetime
 from passlib.hash import sha256_crypt
-from flask import current_app
-from app.decorators import auth_required
 from app.models.user import UserModel
 
 
@@ -27,7 +21,10 @@ class UserRegister(Resource):
     def post(self):
         """Register a user"""
 
+        # Get the data from the parser
         data = UserRegister.parser.parse_args()
+
+        # validate the email
         validity = True
         status = 0
         regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
@@ -39,10 +36,14 @@ class UserRegister(Resource):
             validity = False
             message = "Account with this email already exists"
             status = 2
+
+        # validate the password
         if len(data["password"]) < 6:
             validity = False
             message = "Password must be at least 6 characters long"
             status = 3
+
+        # save the user to the database
         if validity:
             user = UserModel(
                 email=data["email"], password_hash=sha256_crypt.hash(data["password"])

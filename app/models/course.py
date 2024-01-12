@@ -3,6 +3,10 @@ from sqlalchemy.sql import func
 
 
 class CourseModel(db.Model):
+    """
+    This DB model represents a course.
+    """
+
     __tablename__ = "course"
 
     # atributes
@@ -24,6 +28,7 @@ class CourseModel(db.Model):
         super(CourseModel, self).__init__(**kwargs)
 
     def json(self):
+        """Return a JSON representation of a course."""
         return {
             "id": self.id,
             "title": self.title,
@@ -34,17 +39,21 @@ class CourseModel(db.Model):
         }
 
     def update(self, **kwargs):
+        """Update a course."""
         for key in kwargs.keys():
             setattr(self, key, kwargs[key])
 
     def save_to_db(self):
+        """Save a course to the database."""
         db.session.add(self)
         db.session.commit()
 
     @classmethod
     def find_by_id(cls, _id):
+        """Find a course by ID."""
         return cls.query.filter_by(id=_id).first()
 
     def delete_from_db(self):
+        """Delete a course from the database."""
         db.session.delete(self)
         db.session.commit()

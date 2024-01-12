@@ -1,12 +1,7 @@
 from flask_restful import Resource, reqparse
 from app.decorators import auth_required
-from werkzeug import datastructures
 from flask import Response, json
-import boto3
-from flask import request
 import base64
-from flask import current_app
-from codecs import encode
 
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
 
