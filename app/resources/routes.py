@@ -34,8 +34,8 @@ def initialize_routes(api):  # image_bucket, ses_client):
     api.add_resource(UserValidate, "/api/validate")
     api.add_resource(UserRefreshToken, "/api/refresh_token")
     # Frontend pages
-    api.add_resource(CourseList, "/api/page_courses")
-    api.add_resource(Course, "/api/page_course/<string:id>")
+    api.add_resource(CourseList, "/api/courses")
+    api.add_resource(Course, "/api/course/<string:id>")
 
     #############################
     ###### ADMIN ENDPOINTS ######
