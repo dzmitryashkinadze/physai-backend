@@ -1,6 +1,6 @@
 # user recource classes
 from app.resources.user.register import UserRegister
-from app.resources.user.user_login import UserLogin
+from app.resources.user.login import UserLogin
 from app.resources.user.validate import UserValidate
 from app.resources.user.refresh_token import UserRefreshToken
 from app.resources.user.course import CourseList
@@ -10,16 +10,9 @@ from app.resources.user.course import Course
 # from app.resources.user.email import Email
 
 # admin resource classes
-from app.resources.admin.login import AdminLogin
-from app.resources.admin.validate import AdminValidate
-from app.resources.admin.refresh_token import AdminRefreshToken
 from app.resources.admin.course import AdminCourse, AdminCourseList
 from app.resources.admin.equation import AdminEquation, AdminEquationList
 from app.resources.admin.problem import AdminProblem, AdminProblemList
-from app.resources.admin.user_progress_course import (
-    AdminUserProgressCourse,
-    AdminUserProgressCourseList,
-)
 from app.resources.admin.user import AdminUser, AdminUserList
 from app.resources.admin.image import AdminImage, AdminImageList
 
@@ -40,10 +33,6 @@ def initialize_routes(api):  # image_bucket, ses_client):
     #############################
     ###### ADMIN ENDPOINTS ######
     #############################
-    # Authorization endpoints
-    api.add_resource(AdminLogin, "/api/admin/login")
-    api.add_resource(AdminValidate, "/api/admin/validate")
-    api.add_resource(AdminRefreshToken, "/api/admin/refresh_token")
     # Resource groups
     api.add_resource(AdminCourse, "/api/admin/courses/<string:id>")
     api.add_resource(AdminCourseList, "/api/admin/courses")
@@ -51,10 +40,6 @@ def initialize_routes(api):  # image_bucket, ses_client):
     api.add_resource(AdminEquationList, "/api/admin/equations")
     api.add_resource(AdminProblem, "/api/admin/problems/<string:id>")
     api.add_resource(AdminProblemList, "/api/admin/problems")
-    api.add_resource(
-        AdminUserProgressCourse, "/api/admin/user_progress_courses/<string:id>"
-    )
-    api.add_resource(AdminUserProgressCourseList, "/api/admin/user_progress_courses")
     api.add_resource(AdminUser, "/api/admin/users/<string:id>")
     api.add_resource(AdminUserList, "/api/admin/users")
     # api.add_resource(
