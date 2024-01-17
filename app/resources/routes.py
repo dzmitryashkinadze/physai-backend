@@ -15,6 +15,7 @@ from app.resources.admin.equation import AdminEquation, AdminEquationList
 from app.resources.admin.problem import AdminProblem, AdminProblemList
 from app.resources.admin.user import AdminUser, AdminUserList
 from app.resources.admin.image import AdminImage, AdminImageList
+from app.resources.admin.login import AdminLogin
 
 
 def initialize_routes(api):  # image_bucket, ses_client):
@@ -42,6 +43,7 @@ def initialize_routes(api):  # image_bucket, ses_client):
     api.add_resource(AdminProblemList, "/api/admin/problems")
     api.add_resource(AdminUser, "/api/admin/users/<string:id>")
     api.add_resource(AdminUserList, "/api/admin/users")
+    api.add_resource(AdminLogin, "/api/admin/login")
     # api.add_resource(
     #     AdminImage,
     #     "/api/admin/images/<string:key>",
