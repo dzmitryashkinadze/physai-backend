@@ -31,6 +31,8 @@ class UserProgressCourseModel(db.Model):
             "course_id": self.course_id,
             "progress": self.progress,
             "completed": self.completed,
+            "time_created": self.time_created,
+            "time_updated": self.time_updated,
         }
 
     def update(self, **kwargs):

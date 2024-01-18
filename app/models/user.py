@@ -22,7 +22,13 @@ class UserModel(db.Model):
 
     def json(self):
         """Return a JSON representation of the user"""
-        return {"id": self.id, "email": self.email, "role": self.role}
+        return {
+            "id": self.id,
+            "email": self.email,
+            "role": self.role,
+            "time_created": self.time_created,
+            "time_updated": self.time_updated,
+        }
 
     def update(self, **kwargs):
         """Update the user"""

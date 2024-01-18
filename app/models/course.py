@@ -36,6 +36,8 @@ class CourseModel(db.Model):
             "description": self.description,
             "sequence_id": self.sequence_id,
             "visible": self.visible,
+            "time_created": self.time_created,
+            "time_updated": self.time_updated,
         }
 
     def update(self, **kwargs):

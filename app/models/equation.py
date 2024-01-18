@@ -31,6 +31,8 @@ class EquationModel(db.Model):
             "description": self.description,
             "equation": self.equation,
             "visible": self.visible,
+            "time_created": self.time_created,
+            "time_updated": self.time_updated,
         }
 
     def update(self, **kwargs):

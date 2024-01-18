@@ -33,6 +33,8 @@ class ProblemModel(db.Model):
             "explanation": self.explanation,
             "solution": self.solution,
             "visible": self.visible,
+            "time_created": self.time_created,
+            "time_updated": self.time_updated,
         }
 
     def update(self, **kwargs):

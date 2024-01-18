@@ -21,7 +21,13 @@ class UserProgressProblemModel(db.Model):
 
     def json(self):
         """Return a JSON representation of a user's progress on a problem."""
-        return {"id": self.id, "user_id": self.user_id, "problem_id": self.lesson_id}
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "problem_id": self.problem_id,
+            "time_created": self.time_created,
+            "time_updated": self.time_updated,
+        }
 
     def update(self, **kwargs):
         """Update a user's progress on a problem."""
