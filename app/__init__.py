@@ -42,9 +42,20 @@ def create_app(config_class):
     # init CORS
     CORS(
         app,
-        resources=r"/api/*",
+        resources={r"/api/*": {"origins": "*"}},
         headers="Content-Type",
         expose_headers=["X-Total-Count", "Content-Range"],
     )
+
+    @app.after_request
+    def after_request(response):
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add(
+            "Access-Control-Allow-Headers", "Content-Type,Authorization"
+        )
+        response.headers.add(
+            "Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS"
+        )
+        return response
 
     return app
