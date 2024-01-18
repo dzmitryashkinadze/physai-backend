@@ -15,6 +15,7 @@ class ProblemModel(db.Model):
     description = db.Column(db.Text, nullable=False)
     explanation = db.Column(db.Text, nullable=False)
     solution = db.Column(db.Text, nullable=False)
+    sequence_id = db.Column(db.Integer, nullable=False)
     visible = db.Column(db.Boolean, default=False, nullable=False)
     time_created = db.Column(
         db.DateTime(timezone=False), server_default=func.now(), nullable=False
@@ -32,6 +33,7 @@ class ProblemModel(db.Model):
             "description": self.description,
             "explanation": self.explanation,
             "solution": self.solution,
+            "sequence_id": self.sequence_id,
             "visible": self.visible,
             "time_created": self.time_created,
             "time_updated": self.time_updated,
