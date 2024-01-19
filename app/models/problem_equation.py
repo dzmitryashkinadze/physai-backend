@@ -27,8 +27,8 @@ class ProblemEquationModel(db.Model):
             "id": self.id,
             "problem_id": self.problem_id,
             "equation_id": self.equation_id,
-            "time_created": self.time_created,
-            "time_updated": self.time_updated,
+            "time_created": str(self.time_created),
+            "time_updated": str(self.time_updated),
         }
 
     def update(self, **kwargs):

@@ -16,7 +16,7 @@ class AdminCourse(Resource):
     parser.add_argument("description", type=str)
     parser.add_argument("visible", type=bool)
     parser.add_argument("group_id", type=int)
-    parser.add_argument("sequence_id", type=int)
+    parser.add_argument("sequence", type=int)
 
     # native features
     native_features = [
@@ -26,7 +26,7 @@ class AdminCourse(Resource):
         "visible",
         "logo_path",
         "group_id",
-        "sequence_id",
+        "sequence",
     ]
 
     @auth_required(3)
@@ -79,7 +79,7 @@ class AdminCourseList(Resource):
         data = list(
             map(
                 lambda x: x.json(),
-                CourseModel.query.order_by(CourseModel.sequence_id).all(),
+                CourseModel.query.order_by(CourseModel.sequence).all(),
             )
         )
         response = Response(json.dumps(data))
@@ -94,15 +94,15 @@ class AdminCourseList(Resource):
         data = {k: v for k, v in data.items() if k in AdminCourse.native_features}
         print(data)
         try:
-            if data["sequence_id"] is None:
-                # check highest sequence_id and set this one highest + 1
+            if data["sequence"] is None:
+                # check highest sequence and set this one highest + 1
                 test = list(
                     map(
                         lambda x: x.json(),
-                        CourseModel.query.order_by(CourseModel.sequence_id).all(),
+                        CourseModel.query.order_by(CourseModel.sequence).all(),
                     )
                 )
-                data["sequence_id"] = test[-1]["sequence_id"] + 1
+                data["sequence"] = test[-1]["sequence"] + 1
             raw = CourseModel(**data)
             raw.save_to_db()
         except Exception:

@@ -2,33 +2,29 @@ from app.database import db
 from sqlalchemy.sql import func
 
 
-class UserProgressProblemModel(db.Model):
+class UserLoginModel(db.Model):
     """
     This DB model represents a user's progress on a problem.
     """
 
-    __tablename__ = "user_progress_problem"
+    __tablename__ = "user_login"
 
     # atributes
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    problem_id = db.Column(db.Integer, db.ForeignKey("problem.id"), nullable=False)
-    success = db.Column(db.Boolean, nullable=False)
     time_created = db.Column(
         db.DateTime(timezone=False), server_default=func.now(), nullable=False
     )
     time_updated = db.Column(db.DateTime(timezone=False), onupdate=func.now())
 
     def __init__(self, **kwargs):
-        super(UserProgressProblemModel, self).__init__(**kwargs)
+        super(UserLoginModel, self).__init__(**kwargs)
 
     def json(self):
         """Return a JSON representation of a user's progress on a problem."""
         return {
             "id": self.id,
             "user_id": self.user_id,
-            "problem_id": self.problem_id,
-            "success": self.success,
             "time_created": str(self.time_created),
             "time_updated": str(self.time_updated),
         }

@@ -14,7 +14,7 @@ class CourseModel(db.Model):
     title = db.Column(db.String(255), nullable=False)
     summary = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text, nullable=False)
-    sequence_id = db.Column(db.Integer, nullable=False)
+    sequence = db.Column(db.Integer, nullable=False)
     visible = db.Column(db.Boolean, default=False, nullable=False)
     time_created = db.Column(
         db.DateTime(timezone=False), server_default=func.now(), nullable=False
@@ -34,10 +34,10 @@ class CourseModel(db.Model):
             "title": self.title,
             "summary": self.summary,
             "description": self.description,
-            "sequence_id": self.sequence_id,
+            "sequence": self.sequence,
             "visible": self.visible,
-            "time_created": self.time_created,
-            "time_updated": self.time_updated,
+            "time_created": str(self.time_created),
+            "time_updated": str(self.time_updated),
         }
 
     def update(self, **kwargs):

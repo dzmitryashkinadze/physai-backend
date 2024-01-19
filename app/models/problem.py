@@ -11,11 +11,10 @@ class ProblemModel(db.Model):
 
     # atributes
     id = db.Column(db.Integer, primary_key=True)
-    course_id = db.Column(db.Integer, db.ForeignKey("course.id"), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    explanation = db.Column(db.Text, nullable=False)
+    graph = db.Column(db.Text, nullable=False)
+    hint = db.Column(db.Text, nullable=False)
     solution = db.Column(db.Text, nullable=False)
-    sequence_id = db.Column(db.Integer, nullable=False)
     visible = db.Column(db.Boolean, default=False, nullable=False)
     time_created = db.Column(
         db.DateTime(timezone=False), server_default=func.now(), nullable=False
@@ -29,14 +28,12 @@ class ProblemModel(db.Model):
         """Return a JSON representation of a problem."""
         return {
             "id": self.id,
-            "course_id": self.course_id,
             "description": self.description,
             "explanation": self.explanation,
             "solution": self.solution,
-            "sequence_id": self.sequence_id,
             "visible": self.visible,
-            "time_created": self.time_created,
-            "time_updated": self.time_updated,
+            "time_created": str(self.time_created),
+            "time_updated": str(self.time_updated),
         }
 
     def update(self, **kwargs):

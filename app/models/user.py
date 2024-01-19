@@ -26,8 +26,8 @@ class UserModel(db.Model):
             "id": self.id,
             "email": self.email,
             "role": self.role,
-            "time_created": self.time_created,
-            "time_updated": self.time_updated,
+            "time_created": str(self.time_created),
+            "time_updated": str(self.time_updated),
         }
 
     def update(self, **kwargs):

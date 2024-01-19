@@ -14,6 +14,7 @@ class EquationModel(db.Model):
     title = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text, nullable=False)
     equation = db.Column(db.String(255), nullable=False)
+    sequence = db.Column(db.Integer, nullable=False)
     visible = db.Column(db.Boolean, default=False, nullable=False)
     time_created = db.Column(
         db.DateTime(timezone=False), server_default=func.now(), nullable=False
@@ -30,9 +31,10 @@ class EquationModel(db.Model):
             "title": self.title,
             "description": self.description,
             "equation": self.equation,
+            "sequence": self.sequence,
             "visible": self.visible,
-            "time_created": self.time_created,
-            "time_updated": self.time_updated,
+            "time_created": str(self.time_created),
+            "time_updated": str(self.time_updated),
         }
 
     def update(self, **kwargs):

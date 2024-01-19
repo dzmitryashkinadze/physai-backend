@@ -17,7 +17,7 @@ class Course(Resource):
 
         # Get the chapters of the course
         chapters = course.chapters
-        chapters.sort(key=lambda x: x.sequence_id)
+        chapters.sort(key=lambda x: x.sequence)
 
         # Update course JSON
         course_json["chapter_count"] = len(chapters)
@@ -35,8 +35,8 @@ class Course(Resource):
             lesson_count += len(lessons)
             chapter_json["lesson_count"] = len(lessons)
 
-            # Sort the lessons by sequence_id and serialize them
-            lessons.sort(key=lambda x: x.sequence_id)
+            # Sort the lessons by sequence and serialize them
+            lessons.sort(key=lambda x: x.sequence)
             lesson_list = []
             for lesson in lessons:
                 # Convert the lesson to JSON
