@@ -10,7 +10,7 @@ class UserProgressProblemModel(db.Model):
     __tablename__ = "user_progress_problem"
 
     # atributes
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     problem_id = db.Column(db.Integer, db.ForeignKey("problem.id"), nullable=False)
     success = db.Column(db.Boolean, nullable=False)

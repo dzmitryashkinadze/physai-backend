@@ -10,7 +10,7 @@ class ProblemTagModel(db.Model):
     __tablename__ = "problem_tag"
 
     # atributes
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     problem_id = db.Column(db.Integer, db.ForeignKey("problem.id"), nullable=False)
     tag_id = db.Column(db.Integer, db.ForeignKey("tag.id"), nullable=False)
     time_created = db.Column(

@@ -10,7 +10,7 @@ class EquationModel(db.Model):
     __tablename__ = "equation"
 
     # atributes
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text, nullable=False)
     equation = db.Column(db.String(255), nullable=False)

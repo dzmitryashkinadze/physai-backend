@@ -10,7 +10,7 @@ class ProblemModel(db.Model):
     __tablename__ = "problem"
 
     # atributes
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     description = db.Column(db.Text, nullable=False)
     graph = db.Column(db.Text, nullable=False)
     hint = db.Column(db.Text, nullable=False)

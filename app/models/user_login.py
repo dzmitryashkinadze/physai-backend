@@ -10,7 +10,7 @@ class UserLoginModel(db.Model):
     __tablename__ = "user_login"
 
     # atributes
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     time_created = db.Column(
         db.DateTime(timezone=False), server_default=func.now(), nullable=False

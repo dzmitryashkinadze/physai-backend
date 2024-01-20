@@ -10,7 +10,7 @@ class ProblemEquationModel(db.Model):
     __tablename__ = "problem_equation"
 
     # atributes
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     problem_id = db.Column(db.Integer, db.ForeignKey("problem.id"), nullable=False)
     equation_id = db.Column(db.Integer, db.ForeignKey("equation.id"), nullable=False)
     time_created = db.Column(

@@ -10,7 +10,7 @@ class CourseTagModel(db.Model):
     __tablename__ = "course_tag"
 
     # atributes
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     course_id = db.Column(db.Integer, db.ForeignKey("course.id"), nullable=False)
     tag_id = db.Column(db.Integer, db.ForeignKey("tag.id"), nullable=False)
     time_created = db.Column(

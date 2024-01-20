@@ -10,7 +10,7 @@ class UserProgressCourseModel(db.Model):
     __tablename__ = "user_progress_course"
 
     # atributes
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     course_id = db.Column(db.Integer, db.ForeignKey("course.id"), nullable=False)
     progress = db.Column(db.Integer, nullable=False)

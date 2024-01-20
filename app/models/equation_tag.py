@@ -10,7 +10,7 @@ class EquationTagModel(db.Model):
     __tablename__ = "equation_tag"
 
     # atributes
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     equation_id = db.Column(db.Integer, db.ForeignKey("equation.id"), nullable=False)
     tag_id = db.Column(db.Integer, db.ForeignKey("tag.id"), nullable=False)
     time_created = db.Column(

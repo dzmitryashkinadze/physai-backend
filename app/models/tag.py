@@ -10,7 +10,7 @@ class TagModel(db.Model):
     __tablename__ = "tag"
 
     # atributes
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     tag = db.Column(db.String(255), nullable=False)
     type = db.Column(db.String(255), nullable=False)
     sequence = db.Column(db.Integer, nullable=False)

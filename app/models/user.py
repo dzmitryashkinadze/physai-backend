@@ -10,7 +10,7 @@ class UserModel(db.Model):
     __tablename__ = "user"
 
     # atributes
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(180))
     password_hash = db.Column(db.String(180))
     role = db.Column(db.Integer, default=1)

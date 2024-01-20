@@ -10,7 +10,7 @@ class CourseProblemModel(db.Model):
     __tablename__ = "course_problem"
 
     # atributes
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     course_id = db.Column(db.Integer, db.ForeignKey("course.id"), nullable=False)
     problem_id = db.Column(db.Integer, db.ForeignKey("problem.id"), nullable=False)
     sequence = db.Column(db.Integer, nullable=False)

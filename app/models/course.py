@@ -10,7 +10,7 @@ class CourseModel(db.Model):
     __tablename__ = "course"
 
     # atributes
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(255), nullable=False)
     summary = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text, nullable=False)
@@ -20,9 +20,6 @@ class CourseModel(db.Model):
         db.DateTime(timezone=False), server_default=func.now(), nullable=False
     )
     time_updated = db.Column(db.DateTime(timezone=False), onupdate=func.now())
-
-    # Relationships
-    problems = db.relationship("ProblemModel", backref="course", lazy=True)
 
     def __init__(self, **kwargs):
         super(CourseModel, self).__init__(**kwargs)

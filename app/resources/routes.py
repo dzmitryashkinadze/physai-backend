@@ -80,9 +80,9 @@ def initialize_routes(api):  # image_bucket, ses_client):
     api.add_resource(AdminTagList, "/api/admin/tags")
     api.add_resource(AdminTheory, "/api/admin/theories/<string:id>")
     api.add_resource(AdminTheoryList, "/api/admin/theories")
-    api.add_resource(AdminUserLoginList, "/api/admin/userlogins")
-    api.add_resource(AdminUserProgressCourseList, "/api/admin/userprogresscourses")
-    api.add_resource(AdminUserProgressProblemList, "/api/admin/userprogressproblems")
+    api.add_resource(AdminUserLoginList, "/api/admin/user_logins")
+    api.add_resource(AdminUserProgressCourseList, "/api/admin/user_progress_courses")
+    api.add_resource(AdminUserProgressProblemList, "/api/admin/user_progress_problems")
     api.add_resource(AdminUser, "/api/admin/users/<string:id>")
     api.add_resource(AdminUserList, "/api/admin/users")
     # api.add_resource(
