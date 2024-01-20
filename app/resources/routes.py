@@ -35,6 +35,7 @@ from app.resources.admin.theory import AdminTheory, AdminTheoryList
 from app.resources.admin.user_login import AdminUserLoginList
 from app.resources.admin.user_progress_course import AdminUserProgressCourseList
 from app.resources.admin.user_progress_problem import AdminUserProgressProblemList
+from app.resources.admin.user_progress_theory import AdminUserProgressTheoryList
 from app.resources.admin.user import AdminUser, AdminUserList
 
 
@@ -83,6 +84,7 @@ def initialize_routes(api):  # image_bucket, ses_client):
     api.add_resource(AdminUserLoginList, "/api/admin/user_logins")
     api.add_resource(AdminUserProgressCourseList, "/api/admin/user_progress_courses")
     api.add_resource(AdminUserProgressProblemList, "/api/admin/user_progress_problems")
+    api.add_resource(AdminUserProgressTheoryList, "/api/admin/user_progress_theories")
     api.add_resource(AdminUser, "/api/admin/users/<string:id>")
     api.add_resource(AdminUserList, "/api/admin/users")
     # api.add_resource(
