@@ -15,7 +15,6 @@ class EquationModel(db.Model):
     description = db.Column(db.Text, nullable=False)
     equation = db.Column(db.String(255), nullable=False)
     graph_id = db.Column(db.Integer, db.ForeignKey("graph.id"), nullable=False)
-    sequence = db.Column(db.Integer, nullable=False)
     visible = db.Column(db.Boolean, default=False, nullable=False)
     time_created = db.Column(
         db.DateTime(timezone=False), server_default=func.now(), nullable=False
@@ -33,7 +32,6 @@ class EquationModel(db.Model):
             "description": self.description,
             "equation": self.equation,
             "graph_id": self.graph_id,
-            "sequence": self.sequence,
             "visible": self.visible,
             "time_created": str(self.time_created),
             "time_updated": str(self.time_updated),
