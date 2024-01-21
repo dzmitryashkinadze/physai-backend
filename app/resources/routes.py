@@ -23,6 +23,7 @@ from app.resources.admin.course_theory import AdminCourseTheory, AdminCourseTheo
 from app.resources.admin.course import AdminCourse, AdminCourseList
 from app.resources.admin.equation_tag import AdminEquationTag, AdminEquationTagList
 from app.resources.admin.equation import AdminEquation, AdminEquationList
+from app.resources.admin.graph import AdminGraph, AdminGraphList
 from app.resources.admin.login import AdminLogin
 from app.resources.admin.problem_equation import (
     AdminProblemEquation,
@@ -70,6 +71,8 @@ def initialize_routes(api):  # image_bucket, ses_client):
     api.add_resource(AdminEquationTagList, "/api/admin/equation_tags")
     api.add_resource(AdminEquation, "/api/admin/equations/<string:id>")
     api.add_resource(AdminEquationList, "/api/admin/equations")
+    api.add_resource(AdminGraph, "/api/admin/graphs/<string:id>")
+    api.add_resource(AdminGraphList, "/api/admin/graphs")
     api.add_resource(AdminLogin, "/api/admin/login")
     api.add_resource(AdminProblemEquation, "/api/admin/problem_equations/<string:id>")
     api.add_resource(AdminProblemEquationList, "/api/admin/problem_equations")

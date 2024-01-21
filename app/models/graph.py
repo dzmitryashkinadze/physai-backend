@@ -2,37 +2,29 @@ from app.database import db
 from sqlalchemy.sql import func
 
 
-class ProblemModel(db.Model):
+class GraphModel(db.Model):
     """
-    This DB model represents a problem.
+    This DB model represents a graph.
     """
 
-    __tablename__ = "problem"
+    __tablename__ = "graph"
 
     # atributes
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    description = db.Column(db.Text, nullable=False)
-    graph_id = db.Column(db.Integer, db.ForeignKey("graph.id"), nullable=False)
-    hint = db.Column(db.Text, nullable=False)
-    solution = db.Column(db.Text, nullable=False)
-    visible = db.Column(db.Boolean, default=False, nullable=False)
+    graph = db.Column(db.Text, nullable=False)
     time_created = db.Column(
         db.DateTime(timezone=False), server_default=func.now(), nullable=False
     )
     time_updated = db.Column(db.DateTime(timezone=False), onupdate=func.now())
 
     def __init__(self, **kwargs):
-        super(ProblemModel, self).__init__(**kwargs)
+        super(GraphModel, self).__init__(**kwargs)
 
     def json(self):
         """Return a JSON representation of a problem."""
         return {
             "id": self.id,
-            "description": self.description,
-            "graph_id": self.graph_id,
-            "hint": self.hint,
-            "solution": self.solution,
-            "visible": self.visible,
+            "graph": self.graph,
             "time_created": str(self.time_created),
             "time_updated": str(self.time_updated),
         }

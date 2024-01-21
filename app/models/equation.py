@@ -14,6 +14,7 @@ class EquationModel(db.Model):
     title = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text, nullable=False)
     equation = db.Column(db.String(255), nullable=False)
+    graph_id = db.Column(db.Integer, db.ForeignKey("graph.id"), nullable=False)
     sequence = db.Column(db.Integer, nullable=False)
     visible = db.Column(db.Boolean, default=False, nullable=False)
     time_created = db.Column(
@@ -31,6 +32,7 @@ class EquationModel(db.Model):
             "title": self.title,
             "description": self.description,
             "equation": self.equation,
+            "graph_id": self.graph_id,
             "sequence": self.sequence,
             "visible": self.visible,
             "time_created": str(self.time_created),
