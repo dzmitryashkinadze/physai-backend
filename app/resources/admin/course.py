@@ -15,8 +15,6 @@ class AdminCourse(Resource):
     parser.add_argument("summary", type=str)
     parser.add_argument("description", type=str)
     parser.add_argument("visible", type=bool)
-    parser.add_argument("group_id", type=int)
-    parser.add_argument("sequence", type=int)
 
     # native features
     native_features = [

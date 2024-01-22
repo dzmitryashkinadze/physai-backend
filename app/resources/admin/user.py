@@ -11,7 +11,6 @@ class AdminUser(Resource):
 
     # Create a parser for the incoming request
     parser = reqparse.RequestParser()
-    parser.add_argument("email", type=str)
     parser.add_argument("role", type=int)
 
     @auth_required(3)
@@ -54,13 +53,3 @@ class AdminUserList(Resource):
         response = Response(json.dumps(data))
         response.headers["Content-Range"] = len(data)
         return response
-
-    @auth_required(3)
-    def post(user, self):
-        data = AdminUser.parser.parse_args()
-        try:
-            raw = UserModel(**data)
-            raw.save_to_db()
-        except Exception:
-            return {"message": "Error with raw creation"}, 404
-        return raw.json(), 201

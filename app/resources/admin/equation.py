@@ -12,8 +12,9 @@ class AdminEquation(Resource):
     # Create a parser for the incoming request
     parser = reqparse.RequestParser()
     parser.add_argument("title", type=str)
-    parser.add_argument("equation", type=str)
     parser.add_argument("description", type=str)
+    parser.add_argument("equation", type=str)
+    parser.add_argument("graph_id", type=int)
     parser.add_argument("visible", type=bool)
 
     @auth_required(3)

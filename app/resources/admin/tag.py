@@ -11,11 +11,9 @@ class AdminTag(Resource):
 
     # Create a parser for the incoming request
     parser = reqparse.RequestParser()
-    parser.add_argument("description", type=str)
-    parser.add_argument("explanation", type=str)
-    parser.add_argument("solution", type=str)
-    parser.add_argument("visible", type=bool)
-    parser.add_argument("course_id", type=int)
+    parser.add_argument("tag", type=str)
+    parser.add_argument("type", type=str)
+    parser.add_argument("sequence", type=int)
 
     @auth_required(3)
     def get(user, self, id):
