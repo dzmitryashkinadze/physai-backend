@@ -74,12 +74,7 @@ class AdminCourseList(Resource):
     def get(user, self):
         """Get all courses"""
 
-        data = list(
-            map(
-                lambda x: x.json(),
-                CourseModel.query.order_by(CourseModel.sequence).all(),
-            )
-        )
+        data = list(map(lambda x: x.json(), CourseModel.query.all()))
         response = Response(json.dumps(data))
         response.headers["Content-Range"] = len(data)
         return response
@@ -89,18 +84,7 @@ class AdminCourseList(Resource):
         """Create a course"""
 
         data = AdminCourse.parser.parse_args()
-        data = {k: v for k, v in data.items() if k in AdminCourse.native_features}
-        print(data)
         try:
-            if data["sequence"] is None:
-                # check highest sequence and set this one highest + 1
-                test = list(
-                    map(
-                        lambda x: x.json(),
-                        CourseModel.query.order_by(CourseModel.sequence).all(),
-                    )
-                )
-                data["sequence"] = test[-1]["sequence"] + 1
             raw = CourseModel(**data)
             raw.save_to_db()
         except Exception:
