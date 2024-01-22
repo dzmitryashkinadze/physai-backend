@@ -2,55 +2,49 @@ from app.database import db
 from sqlalchemy.sql import func
 
 
-class CourseModel(db.Model):
+class GraphtoolModel(db.Model):
     """
-    This DB model represents a course.
+    This DB model represents a graph.
     """
 
-    __tablename__ = "course"
+    __tablename__ = "graphtool"
 
     # atributes
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    title = db.Column(db.String(255), nullable=False)
-    summary = db.Column(db.Text, nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    visible = db.Column(db.Boolean, default=False, nullable=False)
+    graphtool = db.Column(db.Text, nullable=False)
     time_created = db.Column(
         db.DateTime(timezone=False), server_default=func.now(), nullable=False
     )
     time_updated = db.Column(db.DateTime(timezone=False), onupdate=func.now())
 
     def __init__(self, **kwargs):
-        super(CourseModel, self).__init__(**kwargs)
+        super(GraphtoolModel, self).__init__(**kwargs)
 
     def json(self):
-        """Return a JSON representation of a course."""
+        """Return a JSON representation of a problem."""
         return {
             "id": self.id,
-            "title": self.title,
-            "summary": self.summary,
-            "description": self.description,
-            "visible": self.visible,
+            "graphtool": self.graphtool,
             "time_created": str(self.time_created),
             "time_updated": str(self.time_updated),
         }
 
     def update(self, **kwargs):
-        """Update a course."""
+        """Update a problem."""
         for key in kwargs.keys():
             setattr(self, key, kwargs[key])
 
     def save_to_db(self):
-        """Save a course to the database."""
+        """Save a problem to the database."""
         db.session.add(self)
         db.session.commit()
 
     @classmethod
     def find_by_id(cls, _id):
-        """Find a course by ID."""
+        """Find a problem by ID."""
         return cls.query.filter_by(id=_id).first()
 
     def delete_from_db(self):
-        """Delete a course from the database."""
+        """Delete a problem from the database."""
         db.session.delete(self)
         db.session.commit()
