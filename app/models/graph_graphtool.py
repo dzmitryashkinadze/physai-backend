@@ -2,31 +2,31 @@ from app.database import db
 from sqlalchemy.sql import func
 
 
-class ProblemEquationModel(db.Model):
+class GraphGraphtoolModel(db.Model):
     """
     This DB model represents a problem equation.
     """
 
-    __tablename__ = "problem_equation"
+    __tablename__ = "graph_graphtool"
 
     # atributes
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    problem_id = db.Column(db.Integer, db.ForeignKey("problem.id"), nullable=False)
-    equation_id = db.Column(db.Integer, db.ForeignKey("equation.id"), nullable=False)
+    graph_id = db.Column(db.Integer, db.ForeignKey("graph.id"), nullable=False)
+    graphtool_id = db.Column(db.Integer, db.ForeignKey("graphtool.id"), nullable=False)
     time_created = db.Column(
         db.DateTime(timezone=False), server_default=func.now(), nullable=False
     )
     time_updated = db.Column(db.DateTime(timezone=False), onupdate=func.now())
 
     def __init__(self, **kwargs):
-        super(ProblemEquationModel, self).__init__(**kwargs)
+        super(GraphGraphtoolModel, self).__init__(**kwargs)
 
     def json(self):
-        """Return a JSON representation of a problem equation."""
+        """Return a JSON representation of a graph graphtool many to many rel. table."""
         return {
             "id": self.id,
-            "problem_id": self.problem_id,
-            "equation_id": self.equation_id,
+            "graph_id": self.graph_id,
+            "graphtool_id": self.graphtool_id,
             "time_created": str(self.time_created),
             "time_updated": str(self.time_updated),
         }

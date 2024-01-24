@@ -1,23 +1,23 @@
 from flask_restful import Resource, reqparse
-from app.models.problem_equation import ProblemEquationModel
+from app.models.graph_graphtool import GraphGraphtoolModel
 from flask import Response, json
 from app.decorators import auth_required
 
 
-class AdminProblemEquation(Resource):
+class AdminGraphGraphtool(Resource):
     """
     This resource is used to get, update and delete equations.
     """
 
     # Create a parser for the incoming request
     parser = reqparse.RequestParser()
-    parser.add_argument("problem_id", type=int)
-    parser.add_argument("equation_id", type=int)
+    parser.add_argument("graph_id", type=int)
+    parser.add_argument("graphtool_id", type=int)
 
     @auth_required(3)
     def get(user, self, id):
         """Get a equation by id"""
-        raw = ProblemEquationModel.find_by_id(int(id))
+        raw = GraphGraphtoolModel.find_by_id(int(id))
         if raw:
             return raw.json()
         return {"message": "raw not found"}, 404
@@ -25,8 +25,8 @@ class AdminProblemEquation(Resource):
     @auth_required(3)
     def put(user, self, id):
         """Update a equation by id"""
-        data = AdminProblemEquation.parser.parse_args()
-        raw = ProblemEquationModel.find_by_id(int(id))
+        data = AdminGraphGraphtool.parser.parse_args()
+        raw = GraphGraphtoolModel.find_by_id(int(id))
         if raw:
             raw.update(**data)
         else:
@@ -37,14 +37,14 @@ class AdminProblemEquation(Resource):
     @auth_required(3)
     def delete(user, self, id):
         """Delete a equation by id"""
-        raw = ProblemEquationModel.find_by_id(int(id))
+        raw = GraphGraphtoolModel.find_by_id(int(id))
         if raw:
             raw.delete_from_db()
             return {"message": "raw deleted."}
         return {"message": "raw not found."}, 404
 
 
-class AdminProblemEquationList(Resource):
+class AdminGraphGraphtoolList(Resource):
     """
     This resource is used to get, update and delete equations.
     """
@@ -53,7 +53,7 @@ class AdminProblemEquationList(Resource):
     def get(user, self):
         """Get all equations"""
 
-        data = list(map(lambda x: x.json(), ProblemEquationModel.query.all()))
+        data = list(map(lambda x: x.json(), GraphGraphtoolModel.query.all()))
         response = Response(json.dumps(data))
         response.headers["Content-Range"] = len(data)
         return response
@@ -62,9 +62,9 @@ class AdminProblemEquationList(Resource):
     def post(user, self):
         """Create a equation"""
 
-        data = AdminProblemEquation.parser.parse_args()
+        data = AdminGraphGraphtool.parser.parse_args()
         try:
-            raw = ProblemEquationModel(**data)
+            raw = GraphGraphtoolModel(**data)
             raw.save_to_db()
         except Exception:
             return {"message": "Error with raw creation"}, 404

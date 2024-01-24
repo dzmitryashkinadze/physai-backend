@@ -1,5 +1,5 @@
 from flask_restful import Resource, reqparse
-from app.models.problem_equation import ProblemEquationModel
+from app.models.graph_equation import ProblemEquationModel
 from app.models.equation import EquationModel
 from app.decorators import auth_required
 

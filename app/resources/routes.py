@@ -26,13 +26,13 @@ from app.resources.admin.equation import AdminEquation, AdminEquationList
 from app.resources.admin.graph import AdminGraph, AdminGraphList
 from app.resources.admin.graphtool import AdminGraphtool, AdminGraphtoolList
 from app.resources.admin.login import AdminLogin
-from app.resources.admin.problem_equation import (
-    AdminProblemEquation,
-    AdminProblemEquationList,
+from app.resources.admin.graph_equation import (
+    AdminGraphEquation,
+    AdminGraphEquationList,
 )
-from app.resources.admin.problem_graphtool import (
-    AdminProblemGraphtool,
-    AdminProblemGraphtoolList,
+from app.resources.admin.graph_graphtool import (
+    AdminGraphGraphtool,
+    AdminGraphGraphtoolList,
 )
 from app.resources.admin.problem_tag import AdminProblemTag, AdminProblemTagList
 from app.resources.admin.problem import AdminProblem, AdminProblemList
@@ -81,10 +81,10 @@ def initialize_routes(api):  # image_bucket, ses_client):
     api.add_resource(AdminGraphtool, "/api/admin/graphtools/<string:id>")
     api.add_resource(AdminGraphtoolList, "/api/admin/graphtools")
     api.add_resource(AdminLogin, "/api/admin/login")
-    api.add_resource(AdminProblemEquation, "/api/admin/problem_equations/<string:id>")
-    api.add_resource(AdminProblemEquationList, "/api/admin/problem_equations")
-    api.add_resource(AdminProblemGraphtool, "/api/admin/problem_graphtools/<string:id>")
-    api.add_resource(AdminProblemGraphtoolList, "/api/admin/problem_graphtools")
+    api.add_resource(AdminGraphEquation, "/api/admin/graph_equations/<string:id>")
+    api.add_resource(AdminGraphEquationList, "/api/admin/graph_equations")
+    api.add_resource(AdminGraphGraphtool, "/api/admin/graph_graphtools/<string:id>")
+    api.add_resource(AdminGraphGraphtoolList, "/api/admin/graph_graphtools")
     api.add_resource(AdminProblemTag, "/api/admin/problem_tags/<string:id>")
     api.add_resource(AdminProblemTagList, "/api/admin/problem_tags")
     api.add_resource(AdminProblem, "/api/admin/problems/<string:id>")
