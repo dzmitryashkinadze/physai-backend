@@ -24,7 +24,7 @@ class GraphModel(db.Model):
         """Return a JSON representation of a problem."""
         return {
             "id": self.id,
-            "graph": self.graph,
+            "graph": str(self.graph),
             "time_created": str(self.time_created),
             "time_updated": str(self.time_updated),
         }

@@ -17,9 +17,16 @@ class AdminGraph(Resource):
     def get(user, self, id):
         """Get a problem by id"""
 
+        # get the graph
         raw = GraphModel.find_by_id(int(id))
+
         if raw:
-            return raw.json()
+            raw_json = raw.json()
+
+            # serialize the graph
+            raw_json["graph"] = raw_json["graph"].replace("'", '"')
+            raw_json["graph"] = json.loads(raw_json["graph"])
+            return raw_json
         return {"message": "raw not found"}, 404
 
     @auth_required(3)
